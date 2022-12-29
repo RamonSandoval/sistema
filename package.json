@@ -1,0 +1,51 @@
+{
+  "name": "sistema",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.4",
+    "@emotion/server": "^11.10.0",
+    "@headlessui/react": "^1.7.3",
+    "@heroicons/react": "^2.0.12",
+    "@mantine/carousel": "^5.5.6",
+    "@mantine/core": "^5.9.5",
+    "@mantine/dates": "^5.5.2",
+    "@mantine/form": "^5.9.5",
+    "@mantine/hooks": "^5.5.6",
+    "@mantine/modals": "^5.9.5",
+    "@mantine/next": "^5.5.6",
+    "@mantine/notifications": "^5.9.4",
+    "@strapi/plugin-graphql": "^4.5.3",
+    "@tabler/icons": "^1.101.0",
+    "antd": "^4.24.6",
+    "axios": "^0.27.2",
+    "embla-carousel-autoplay": "^7.0.3",
+    "embla-carousel-react": "^7.0.3",
+    "firebase": "^9.12.0",
+    "format-utils": "^0.0.8",
+    "mantine-datatable": "^1.7.4",
+    "next": "12.3.1",
+    "next-auth": "^4.16.4",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-icons": "^4.6.0",
+    "react-router-dom": "^6.4.3",
+    "swr": "^1.3.0",
+    "tabler-icons-react": "^1.55.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.23",
+    "autoprefixer": "^10.4.12",
+    "eslint": "8.24.0",
+    "eslint-config-next": "12.3.1",
+    "postcss": "^8.4.18",
+    "tailwindcss": "^3.1.8",
+    "typescript": "^4.8.4"
+  }
+}

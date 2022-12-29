@@ -1,0 +1,10 @@
+.stats__container{
+    text-align: center;
+}
+.stats_info{
+    background-color: rgba(112, 112, 112, 0.021);
+    height: 20rem;
+}
+.hr{
+    width: 50%;
+}
