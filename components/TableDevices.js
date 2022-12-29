@@ -177,7 +177,6 @@ const TableDevices = () => {
           <td>
             <Center>{data.attributes.model}</Center>
           </td>
-          <td></td>
           <td>
             <Center>{Fecha(data.attributes.maintenance?.data?.attributes.maintenance_date)}</Center>
           </td>
