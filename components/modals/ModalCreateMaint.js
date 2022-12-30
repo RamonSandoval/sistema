@@ -4,22 +4,24 @@ import {
   TextInput,
   Select,
   Radio,
+  Checkbox,
   Textarea,
   Button,
-  Checkbox,
+  Text,
 } from "@mantine/core";
-import {Fecha} from '../../helpers'
 import { DatePicker } from "@mantine/dates";
 import { useState, useEffect } from "react";
 import stylesModal from "../../styles/ModalRegisterNewMaint.module.css";
 import api from "../../services/api";
 import Notifications from "../Notifications";
-
-const ModalMaintHistory = ({deviceToMaint}) => {
+const ModalCreateMaint = ({deviceToMaintNew}) => {
   const [opened, setOpened] = useState(false);
   const [arrayDevices, setarrayDevices] = useState([]);
   const [arrayDataDev,setArrayDataDev] = useState([]);
-  const id_maint = deviceToMaint.attributes?.maintenance?.data?.id
+  const [arrayDep, setarrayDep] = useState([]);
+  const [active, setActive] = useState(true)
+
+  const id_maint = deviceToMaintNew.id
   useEffect(() => {
     init();
   }, []);
@@ -27,6 +29,8 @@ const ModalMaintHistory = ({deviceToMaint}) => {
   async function init() {
     const list = await api.devicesList(1);
     const list2 = await api.devicesList(2);
+    const listDepartment = await api.departmentsList(1);
+    setarrayDep(listDepartment.data);
     setarrayDevices(list.data.concat(list2.data));
     setArrayDataDev(list.data.concat(list2.data));
 
@@ -36,7 +40,7 @@ const ModalMaintHistory = ({deviceToMaint}) => {
     return d.attributes.device_id;
   });
 
-  async function updateMaintenance(){
+  async function addMaintenance(){
     const body = {
       data:{
         motive: form.values.motive,
@@ -48,43 +52,41 @@ const ModalMaintHistory = ({deviceToMaint}) => {
         next_maintenance: form.values.next_maintenance,
         maintenance_eval: form.values.maintenance_eval,
         maintenance_type_next: form.values.maintenance_type_next,
-        user_request_name: form.values.user_request_name
+        user_request_name: form.values.user_request_name,
+        user_request_department: form.values.user_request_department
+
       }
     }
     try{
-      await api.updateMaintenance(id_maint,body)
+      await api.addMaintenance (id_maint,body)
       Notifications.success("Se ha realizado el mantenimiento con exito");
     }catch(error){
       Notifications.error("Error al realizar el Mantenimiento");
+      console.log(id_maint)
       console.log(error)
     }
   }
 
   const form = useForm({
     initialValues:{
-      device_id: deviceToMaint.attributes.device_id,
-      department_name: deviceToMaint.attributes?.department?.data?.attributes.department_name,
-      model: deviceToMaint.attributes.model,
-      maintenance_type:deviceToMaint.attributes?.maintenance?.data?.attributes.maintenance_type,
-      motive: deviceToMaint.attributes?.maintenance?.data?.attributes.motive,
-      user_request: deviceToMaint.attributes?.maintenance?.data?.attributes.user_request,
-      notes: deviceToMaint.attributes?.maintenance?.data?.attributes.notes,
-      maintenance_date: Fecha(deviceToMaint.attributes?.maintenance?.data?.attributes.maintenance_date),
-      next_maintenance: Fecha(deviceToMaint.attributes?.maintenance?.data?.attributes.next_maintenance),
-      maintenance_eval: deviceToMaint.attributes?.maintenance?.data?.attributes.maintenance_eval,
-      maintenance_type_next: deviceToMaint.attributes?.maintenance?.data?.attributes.maintenance_type_next,
-      user_request_name: deviceToMaint.attributes?.maintenance?.data?.attributes.user_request_name,
-      user_request_department: deviceToMaint.attributes?.maintenance?.data?.attributes.user_request_department
+      device_id: deviceToMaintNew.attributes.device_id,
+      department_name: deviceToMaintNew.attributes?.department?.data?.attributes.department_name,
+      model: deviceToMaintNew.attributes.model,
+      maintenance_type:deviceToMaintNew.attributes?.maintenance?.data?.attributes.maintenance_type,
     },
     validate:{
-
+      department_name: (value) => 
+      value === null ? console.log('No tiene departamento'): null
     }
 
   })
+  var departmentsListSelect = arrayDep.map((d) => {
+    return d.attributes.department_name;
+  });
 
   
   return (
-    <form onSubmit={form.onSubmit(updateMaintenance)}>
+    <form onSubmit={form.onSubmit(addMaintenance)}>
     <div className={stylesModal.modal__container}>
       <div className={stylesModal.modal__lcontainer}>
         <TextInput
@@ -93,7 +95,7 @@ const ModalMaintHistory = ({deviceToMaint}) => {
         limit={8}
         label="ID Equipo"
         {...form.getInputProps("device_id")}
-        />
+        withAsterisk />
 
         <TextInput 
         disabled
@@ -108,38 +110,38 @@ const ModalMaintHistory = ({deviceToMaint}) => {
         {...form.getInputProps("department_name")}
         />
         <TextInput
-        readOnly
+        disabled
         label="Tipo de mantenimiento anterior"
         {...form.getInputProps("maintenance_type")}
         />
 
         <TextInput
-        readOnly
           label="Motivo de Mantenimiento"
           {...form.getInputProps("motive")}
           data={[
             
           ]}
         />
-
-        <Checkbox.Group
-        disabled
-        label="Solicitio Usuario?"
-         {...form.getInputProps("user_request".valueOf(Checkbox))}
+        <Radio.Group
+          label="Solicito Usuario?"
+          
+          {...form.getInputProps("user_request".valueOf(Checkbox.valueOf(Radio)))}
         >
-        <Checkbox readOnly disabled value="yes"label="Si"/>
-        <Checkbox readOnly disabled value="no" label="No"/>
-        </Checkbox.Group>
+          <Radio onClick={()=> setActive(false)} value="yes" label="Si" />
+          <Radio onClick={()=> setActive(true)}value="no" label="No" />
+        </Radio.Group>
 
         <div className={stylesModal.modal__solicitant}>
-          <TextInput
-          readOnly
+          <Select
+            disabled={active}
             label="Departamento / Area"
-
+            data={departmentsListSelect}
             {...form.getInputProps("user_request_department")}
           />
           <TextInput
-          readOnly
+
+            disabled={active}
+            
             className={stylesModal.input__name}
             label="Nombre"
             {...form.getInputProps("user_request_name")}
@@ -153,57 +155,67 @@ const ModalMaintHistory = ({deviceToMaint}) => {
 
       <div className={stylesModal.modal__rcontainer}>
         <Textarea 
-        readOnly
         label="Notas"
         {...form.getInputProps("notes")}
+        withAsterisk />
+        <DatePicker
+          allowFreeInput
+          placeholder="Elegir fecha"
+          label="Mantenimiento Realizado el: "
+          withAsterisk
+          {...form.getInputProps("maintenance_date")}
         />
-        <TextInput
-        readOnly
-        label="Mantenimiento Realizado el: "
-        {...form.getInputProps("maintenance_date")}
-        />
-
         <Select
         label="Tipo de Mantenimiento proximo"
-        clearable
+        searchable
         data={['Interno','Externo','Interno/Externo']}
         {...form.getInputProps("maintenance_type_next")}
         />
-        <TextInput
-        label="Proximo Mantenimiento"
-         {...form.getInputProps("next_maintenance")}
-        />
-        {/* <DatePicker
+        {/* <Checkbox.Group
+          
+          label="Tipo de Mantenimiento proximo"
+          withAsterisk
+          {...form.getInputProps("maintenance_type_next".toString())}
+        >
+          <Checkbox value="Interno" label="Interno" />
+          <Checkbox value="Externo" label="Externo" />
+          <Checkbox value="Interno/Externo" label="Interno/Externo" />
+        </Checkbox.Group> */}
+        <DatePicker
           allowFreeInput
+          placeholder="Elegir fecha"
           label="Proximo Mantenimiento "
           {...form.getInputProps("next_maintenance")}
-        /> */}
-
-        <Checkbox.Group
-        label="Se atendio en tiempo y forma?"
-         {...form.getInputProps("maintenance_eval".valueOf(Checkbox))}
+          withAsterisk
+        />
+        <Radio.Group
+          name="tiempo"
+          label="Se atendio en tiempo y forma?"
+          {...form.getInputProps("maintenance_eval".valueOf(Radio))}
+          withAsterisk
         >
-        <Checkbox readOnly disabled value="yes"label="Si"/>
-        <Checkbox readOnly disabled value="no" label="No"/>
-        </Checkbox.Group>
+          <Radio value="yes" label="Si" />
+          <Radio value="no" label="No"/>
+        </Radio.Group>
         <Select
           label="Realizo Manteniemiento"
+          placeholder=" - "
           {...form.getInputProps("user_maintenance")}
           data={[
             
           ]}
         />
-        {/* <div className={stylesModal.button}>
-          <Button color="red" type="submit">
+        <div className={stylesModal.button}>
+          <Button color="orange" type="submit">
           {" "}
-          Cerrar{" "}
+          Registrar{" "}
           
           </Button>
-        </div> */}
+        </div>
       </div>
     </div>
     </form>
   );
 };
 
-export default ModalMaintHistory;
+export default ModalCreateMaint;

@@ -18,6 +18,9 @@ const ModalMaint = ({deviceToMaint}) => {
   const [opened, setOpened] = useState(false);
   const [arrayDevices, setarrayDevices] = useState([]);
   const [arrayDataDev,setArrayDataDev] = useState([]);
+  const [arrayDep, setarrayDep] = useState([]);
+  const [active, setActive] = useState(true)
+
   const id_maint = deviceToMaint.attributes?.maintenance?.data?.id
   useEffect(() => {
     init();
@@ -26,6 +29,8 @@ const ModalMaint = ({deviceToMaint}) => {
   async function init() {
     const list = await api.devicesList(1);
     const list2 = await api.devicesList(2);
+    const listDepartment = await api.departmentsList(1);
+    setarrayDep(listDepartment.data);
     setarrayDevices(list.data.concat(list2.data));
     setArrayDataDev(list.data.concat(list2.data));
 
@@ -47,7 +52,8 @@ const ModalMaint = ({deviceToMaint}) => {
         next_maintenance: form.values.next_maintenance,
         maintenance_eval: form.values.maintenance_eval,
         maintenance_type_next: form.values.maintenance_type_next,
-        user_request_name: form.values.user_request_name
+        user_request_name: form.values.user_request_name,
+        user_request_department: form.values.user_request_department
 
       }
     }
@@ -73,6 +79,9 @@ const ModalMaint = ({deviceToMaint}) => {
     }
 
   })
+  var departmentsListSelect = arrayDep.map((d) => {
+    return d.attributes.department_name;
+  });
 
   
   return (
@@ -113,24 +122,25 @@ const ModalMaint = ({deviceToMaint}) => {
           ]}
         />
         <Radio.Group
-        
           label="Solicito Usuario?"
-          {...form.getInputProps("user_request".valueOf(Radio))}
+          
+          {...form.getInputProps("user_request".valueOf(Checkbox.valueOf(Radio)))}
         >
-          <Radio  value="yes" label="Si" />
-          <Radio value="no" label="No" />
+          <Radio onClick={()=> setActive(false)} value="yes" label="Si" />
+          <Radio onClick={()=> setActive(true)}value="no" label="No" />
         </Radio.Group>
 
         <div className={stylesModal.modal__solicitant}>
           <Select
+            disabled={active}
             label="Departamento / Area"
-            placeholder=" - "
-            data={[
-              
-            ]}
-            {...form.getInputProps("department")}
+            data={departmentsListSelect}
+            {...form.getInputProps("user_request_department")}
           />
           <TextInput
+
+            disabled={active}
+            
             className={stylesModal.input__name}
             label="Nombre"
             {...form.getInputProps("user_request_name")}

@@ -23,11 +23,13 @@ import {
   IconList,
   IconPlus,
   IconSearch,
+  IconTools,
   IconTrash,
 } from "@tabler/icons";
 import ModalAddDevice from "../components/modals/ModalAddDevice";
 import api from "../services/api";
 import ModalEditDevice from "../components/modals/ModalEditDevice";
+import ModalCreateMaint from "../components/modals/ModalCreateMaint";
 
 const inventory = () => {
   const [opened, setOpened] = useState();
@@ -39,7 +41,11 @@ const inventory = () => {
   const [arrayDevices, setarrayDevices] = useState([]);
   const [arrayDataDev, setarrayDataDev] = useState([]);
   const [deviceToMaint, setDeviceToMaint] = useState({})
+  const [deviceToMaintNew, setDeviceToMaintNew] = useState({})
+
   const [openedMaint, setOpenedMaint] = useState(false);
+  const [openedMaintNew, setOpenedMaintNew] = useState(false);
+
 
 
   useEffect(() => {
@@ -198,6 +204,9 @@ const inventory = () => {
                               <ActionIcon color="yellow" onClick={() => {setOpenedMaint(true); setDeviceToMaint(data)}}>
                                 <IconHistory size={18} />
                               </ActionIcon>
+                              <ActionIcon color="pink" onClick={() => {setOpenedMaintNew(true); setDeviceToMaintNew(data)}}>
+                                <IconTools size={18} />
+                              </ActionIcon>
                               <ActionIcon
                                 color="indigo"
                                 onClick={() => {
@@ -277,10 +286,26 @@ const inventory = () => {
         transitionTimingFunction="ease"
         opened={openedMaint}
         onClose={() => setOpenedMaint(false)}
-        title="Historial de Mantenimiento"
+        title={"Historial de Mantenimiento Previo"}
       >
         <hr />
         <ModalMaintHistory deviceToMaint={{...deviceToMaint}} />
+      </Modal>
+      )}
+
+      {deviceToMaintNew && (
+      <Modal
+        className={stylesModal.modal__container}
+        transition="fade"
+        size={850}
+        transitionDuration={400}
+        transitionTimingFunction="ease"
+        opened={openedMaintNew}
+        onClose={() => setOpenedMaint(false)}
+        title={"Crear Nuevo Mantenimiento"}
+      >
+        <hr />
+        <ModalCreateMaint deviceToMaintNew={{...deviceToMaintNew}} />
       </Modal>
       )}
     </>
