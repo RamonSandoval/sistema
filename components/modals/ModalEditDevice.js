@@ -1,52 +1,54 @@
 import React from "react";
-import { Button, TextInput, Center } from "@mantine/core";
+import { Button, TextInput, Center,Select } from "@mantine/core";
 import { IconClipboardList, IconId, IconPin } from "@tabler/icons";
 import api from "../../services/api";
 import { useForm } from "@mantine/form";
 import Notifications from "../Notifications";
 import { useState, useEffect } from "react";
+import { Devices } from "tabler-icons-react";
+import { data } from "autoprefixer";
+
 
 const ModalEditDevice = ({deviceToEdit,closeModal2}) => {
 
   const id_edit = deviceToEdit.id
+  const [arrayDep, setarrayDep] = useState([]);
 
-  useEffect(() => {
-    init();
-  }, []);
-
-  async function init() {
-    
+  async function init(){
+    const listDepartment = await api.departmentsList(1);
+    setarrayDep(listDepartment.data);
+    init()
   }
+
+  var departmentsListSelect = arrayDep.map((d) => {
+    return d.attributes.department_name;
+  });
   
   async function updateDevice() {
     const body = {
       data: {
         device_id: form.values.device_id,
         department_name: form.values.department_name,
-        model: form.values.model
+        model: form.values.model,
       }
     }
+   
     try {
       await api.updateDevice(id_edit,body);
       Notifications.success("Se ha editado el dispositivo correcatamente");
       closeModal2();
       init();
-      
-      
     } catch (error) {
       Notifications.error("Error al editar el dispositivo");
       console.log(error);
     }
   }
 
-  function test(){
-    console.log(id_edit)
-  }
 
   const form = useForm({
     initialValues:{
         device_id: deviceToEdit.attributes.device_id,
-        department_name: deviceToEdit.attributes?.department?.data?.attributes.department_name,
+        department_name: deviceToEdit.attributes?.departments?.data?.attributes.department_name,
         model: deviceToEdit.attributes.model
         
     },
@@ -66,7 +68,8 @@ const ModalEditDevice = ({deviceToEdit,closeModal2}) => {
           icon={<IconId />}
         />
 
-        <TextInput 
+        <Select
+          data={departmentsListSelect}
           label="Departamento / Area" 
           icon={<IconPin />}
           {...form.getInputProps("department_name")}
@@ -82,7 +85,6 @@ const ModalEditDevice = ({deviceToEdit,closeModal2}) => {
             Aplicar {" "}
           </Button>
         </Center>
-        
       </form>
     </>
   );

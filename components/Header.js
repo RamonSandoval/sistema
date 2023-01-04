@@ -133,11 +133,14 @@ export function Nav() {
         <Header className={styles.header__container} height={60} px="md">
           <Group className={styles.groupContainerMain} sx={{ height: "100%" }}>
             <div>
+              <a href="/">
               <Image className={styles.logo}
                 alt="Dialight Logo"
+                
                 src="/assets/img/logos/dialight_logo.png"
                 width={200}
               ></Image>
+              </a>
             </div>
 
             <div className={styles.groupContainer} >

@@ -30,6 +30,7 @@ import ModalAddDevice from "../components/modals/ModalAddDevice";
 import api from "../services/api";
 import ModalEditDevice from "../components/modals/ModalEditDevice";
 import ModalCreateMaint from "../components/modals/ModalCreateMaint";
+import ModalAddDeviceSteps from "../components/modals/ModalAddDeviceSteps";
 
 const inventory = () => {
   const [opened, setOpened] = useState();
@@ -85,7 +86,7 @@ const inventory = () => {
           ?.toString()
           .toLowerCase()
           .includes(search.toLowerCase()) ||
-        elemento.attributes.department?.data?.attributes.department_name
+        elemento.attributes.departments?.data?.attributes.department_name
           .toString()
           .toLowerCase()
           .includes(search.toLowerCase()) ||
@@ -192,7 +193,7 @@ const inventory = () => {
                         <td>
                           <Center>
                             {
-                              data.attributes.department?.data?.attributes
+                              data.attributes.departments?.data?.attributes
                                 .department_name
                             }
                             {data.attributes.production?.data?.attributes.name}
@@ -260,6 +261,8 @@ const inventory = () => {
         onClose={() => setOpened(false)}
         title="Agregar dispositivos"
       >
+
+        {/* <ModalAddDeviceSteps/> */}
         <ModalAddDevice closeModal={closeModal} />
       </Modal>
 
