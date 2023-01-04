@@ -27,10 +27,10 @@ const api = {
         return await conection.POST('/api/departments', body);
     },
     addMaintenance: async (body) =>{
-        return await conection.POST('/api/maintenances', body);
+        return await conection.POST('/api/maintenances?populate=%2A', body);
     },
     addUser: async () => {
-        return await conection.POST('/api/users?pagination[pageSize]=300');
+        return await conection.POST('/api/users',body);
     },
     /*----------------------------------------------------------------------------------------------------------*/
     /*---------------------------------------------DELETE REQUEST-----------------------------------------------*/
@@ -44,7 +44,7 @@ const api = {
         return await conection.DELETE('/api/maintenances/' + id);
     },
     deleteUser: async () => {
-        return await conection.DELETE('/api/users?pagination[pageSize]=300');
+        return await conection.DELETE('/api/users/' + id);
     },
     /*----------------------------------------------------------------------------------------------------------*/
     /*---------------------------------------------UPDATE REQUEST-----------------------------------------------*/

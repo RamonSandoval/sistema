@@ -1,11 +1,19 @@
-import { ActionIcon, Button, Center, Table } from "@mantine/core";
-import { IconEdit, IconTrash } from "@tabler/icons";
+import { ActionIcon, Button, Center, Modal, Table, Text } from "@mantine/core";
+import { IconEdit, IconPlus, IconTrash } from "@tabler/icons";
 import React from "react";
 import styles from "../styles/UserList.module.css";
+//import Notifications from "../Notifications";
 import { useState, useEffect } from "react";
 import api from "../services/api";
+import ModalEditUser from "./modals/ModalEditUser";
+import ModalAddUser from "./modals/ModalAddUser";
 const UsersList = () => {
   const [arrayUsers, setarrayUsers] = useState([]);
+  const [opened, setOpened] = useState(false)
+  const [opened2, setOpened2] = useState(false);
+  const [opened3, setOpened3] = useState(false);
+  const [userToDelete, setUserToDelete] = useState({});
+  const [userToEdit,setUserToEdit] = useState({});
 
   useEffect(() => {
     init();
@@ -13,10 +21,32 @@ const UsersList = () => {
 
   async function init() {
     const listUsers = await api.usersList(1);
-    setarrayUsers(listUsers.data);
+    setarrayUsers(listUsers);
+  }
+
+  async function deleteUser(id) {
+    try {
+      await api.deleteUser(id);
+      alert('Se ha eliminado el usuario '+id)
+      //Notifications.success("Se ha eliminado el usuario " +id);
+      init();
+    } catch (error) {
+      alert("Error al eliminar al usuario" + id)
+      //Notifications.error("Error al eliminar al usuario" + id);
+      console.error(error);
+    }
   }
   return (
     <>
+    <div className={styles.iconContainer}>
+              <ActionIcon
+                onClick={() => {setOpened(true)}}
+                className={styles.add__icon}
+                variant="filled"
+              >
+                <IconPlus size={30} />
+              </ActionIcon>
+            </div>
       <Table highlightOnHover>
         <thead>
           <tr className={styles.table__titles}>
@@ -62,14 +92,14 @@ const UsersList = () => {
                 <td>
                   <Center>
                     <div className={styles.icons}>
-                      <ActionIcon color="indigo" onClick={() => {}}>
+                      <ActionIcon color="indigo" onClick={() => {setOpened2(true); setUserToEdit(data)}}>
                         <IconEdit size={18} />
                       </ActionIcon>
                       <ActionIcon
                         color="red"
                         onClick={() => {
                           setOpened3(true);
-                          setDepartmentToDelete(data.id);
+                          setUserToDelete(data.id);
                         }}
                       >
                         <IconTrash size={18} />
@@ -81,6 +111,50 @@ const UsersList = () => {
             ))}
         </tbody>
       </Table>
+      {/* MODAL EDIT USER */}      
+
+      {userToEdit && (
+      <Modal
+        opened={opened2}
+        onClose={() => setOpened2(false)}
+        title="Editar Usuario"
+      >
+       <ModalEditUser userToEdit={{...userToEdit}}/>
+      </Modal>
+      )} 
+
+      {/* MODAL ADD USER */}      
+
+      
+      <Modal
+        opened={opened}
+        onClose={() => setOpened(false)}
+        title="Editar Usuario"
+      >
+       <ModalAddUser/>
+      </Modal>
+
+
+      {/* MODAL DELETE USER */}
+      <Modal
+        centered
+        opened={opened3}
+        onClose={() => setOpened3(false)}
+        title={<Text size="lg">Seguro que desea eliminar al Usuario?</Text>}
+      >
+        <div className={styles.modal__confirmation}>
+          <Button onClick={() => setOpened3(false)} color="red">
+            Cancelar
+          </Button>
+          <Button
+            onClick={() =>
+              deleteUser(userToDelete).then(() => setOpened3(false))
+            }
+          >
+            Confirmar
+          </Button>
+        </div>
+      </Modal>
     </>
   );
 };

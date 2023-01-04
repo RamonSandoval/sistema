@@ -52,7 +52,7 @@ const config = () => {
     <>
       <Layout tituloPagina="Configuracion" />
       <div className={styles.mainContainer}>
-        <Tabs defaultValue="departments" className={styles.tabsContainer}>
+        <Tabs defaultValue="users" className={styles.tabsContainer}>
           <Tabs.List>
             <Tabs.Tab value="users" icon={<IconUsers size={14} />}>
               Usuarios

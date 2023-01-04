@@ -19,7 +19,7 @@ const ModalMaintHistory = ({deviceToMaint}) => {
   const [opened, setOpened] = useState(false);
   const [arrayDevices, setarrayDevices] = useState([]);
   const [arrayDataDev,setArrayDataDev] = useState([]);
-  const id_maint = deviceToMaint.attributes?.maintenance?.data?.id
+  const id_maint = deviceToMaint?.attributes?.maintenance?.data?.id
   useEffect(() => {
     init();
   }, []);
@@ -49,6 +49,7 @@ const ModalMaintHistory = ({deviceToMaint}) => {
         maintenance_eval: form.values.maintenance_eval,
         maintenance_type_next: form.values.maintenance_type_next,
         user_request_name: form.values.user_request_name
+
       }
     }
     try{
@@ -74,7 +75,8 @@ const ModalMaintHistory = ({deviceToMaint}) => {
       maintenance_eval: deviceToMaint.attributes?.maintenance?.data?.attributes.maintenance_eval,
       maintenance_type_next: deviceToMaint.attributes?.maintenance?.data?.attributes.maintenance_type_next,
       user_request_name: deviceToMaint.attributes?.maintenance?.data?.attributes.user_request_name,
-      user_request_department: deviceToMaint.attributes?.maintenance?.data?.attributes.user_request_department
+      user_request_department: deviceToMaint.attributes?.maintenance?.data?.attributes.user_request_department,
+      user_maintenance: deviceToMaint.attributes?.maintenance?.data?.attributes.user_maintenance
     },
     validate:{
 
@@ -109,7 +111,7 @@ const ModalMaintHistory = ({deviceToMaint}) => {
         />
         <TextInput
         readOnly
-        label="Tipo de mantenimiento anterior"
+        label="Tipo de mantenimiento previo realizado"
         {...form.getInputProps("maintenance_type")}
         />
 
@@ -125,11 +127,10 @@ const ModalMaintHistory = ({deviceToMaint}) => {
         <Checkbox.Group
         disabled
         label="Solicitio Usuario?"
-         {...form.getInputProps("user_request".valueOf(Checkbox))}
         >
         <Checkbox readOnly disabled value="yes"label="Si"/>
         <Checkbox readOnly disabled value="no" label="No"/>
-        </Checkbox.Group>
+        </Checkbox.Group> 
 
         <div className={stylesModal.modal__solicitant}>
           <TextInput
@@ -163,13 +164,14 @@ const ModalMaintHistory = ({deviceToMaint}) => {
         {...form.getInputProps("maintenance_date")}
         />
 
-        <Select
+        <TextInput
         label="Tipo de Mantenimiento proximo"
-        clearable
-        data={['Interno','Externo','Interno/Externo']}
+        readOnly
+        
         {...form.getInputProps("maintenance_type_next")}
         />
         <TextInput
+        readOnly
         label="Proximo Mantenimiento"
          {...form.getInputProps("next_maintenance")}
         />
@@ -181,17 +183,15 @@ const ModalMaintHistory = ({deviceToMaint}) => {
 
         <Checkbox.Group
         label="Se atendio en tiempo y forma?"
-         {...form.getInputProps("maintenance_eval".valueOf(Checkbox))}
         >
         <Checkbox readOnly disabled value="yes"label="Si"/>
         <Checkbox readOnly disabled value="no" label="No"/>
         </Checkbox.Group>
-        <Select
+
+        <TextInput
+          readOnly
           label="Realizo Manteniemiento"
           {...form.getInputProps("user_maintenance")}
-          data={[
-            
-          ]}
         />
         {/* <div className={stylesModal.button}>
           <Button color="red" type="submit">

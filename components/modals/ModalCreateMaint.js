@@ -9,38 +9,59 @@ import {
   Button,
   Text,
 } from "@mantine/core";
+
 import { DatePicker } from "@mantine/dates";
 import { useState, useEffect } from "react";
 import stylesModal from "../../styles/ModalRegisterNewMaint.module.css";
 import api from "../../services/api";
-import Notifications from "../Notifications";
-const ModalCreateMaint = ({deviceToMaintNew}) => {
-  const [opened, setOpened] = useState(false);
+import Notifications from '../Notifications';
+const ModalCreateMaint = ({deviceToMaintNew,action}) => {
   const [arrayDevices, setarrayDevices] = useState([]);
+  const [arrayUsers,setarrayUsers] = useState([]);
   const [arrayDataDev,setArrayDataDev] = useState([]);
   const [arrayDep, setarrayDep] = useState([]);
   const [active, setActive] = useState(true)
 
   const id_maint = deviceToMaintNew.id
+
   useEffect(() => {
+    if(deviceToMaintNew.attributes?.maintenance?.data === null){
+      Notifications.error("No se ha creado el mantenimiento");
+     
+    } 
+    else{
+      Notifications.error("Ya se ha creado un mantenimiento");
+    } 
     init();
   }, []);
+
+  
+  
+
 
   async function init() {
     const list = await api.devicesList(1);
     const list2 = await api.devicesList(2);
     const listDepartment = await api.departmentsList(1);
+    const listUsers = await api.usersList(1);
+    setarrayUsers(listUsers)
     setarrayDep(listDepartment.data);
     setarrayDevices(list.data.concat(list2.data));
     setArrayDataDev(list.data.concat(list2.data));
-
   }
+   
+  
 
   var devicesListSelect = arrayDataDev.map((d) => {
     return d.attributes.device_id;
   });
 
+  var usersList = arrayUsers.map((d) => {
+    return d.username
+  })
+
   async function addMaintenance(){
+    
     const body = {
       data:{
         motive: form.values.motive,
@@ -53,18 +74,22 @@ const ModalCreateMaint = ({deviceToMaintNew}) => {
         maintenance_eval: form.values.maintenance_eval,
         maintenance_type_next: form.values.maintenance_type_next,
         user_request_name: form.values.user_request_name,
-        user_request_department: form.values.user_request_department
+        user_request_department: form.values.user_request_department,
+        device: id_maint
 
       }
     }
     try{
-      await api.addMaintenance (id_maint,body)
+        console.log('Estas por crear un nuevo mantenimiento')
+      await api.addMaintenance(body)
       Notifications.success("Se ha realizado el mantenimiento con exito");
+      
     }catch(error){
       Notifications.error("Error al realizar el Mantenimiento");
       console.log(id_maint)
       console.log(error)
-    }
+    
+  }
   }
 
   const form = useForm({
@@ -109,9 +134,10 @@ const ModalCreateMaint = ({deviceToMaintNew}) => {
         label="Departamento / Area" 
         {...form.getInputProps("department_name")}
         />
-        <TextInput
-        disabled
-        label="Tipo de mantenimiento anterior"
+         <Select
+        label="Tipo de Mantenimiento a realizar"
+        searchable
+        data={['Interno','Externo','Interno/Externo']}
         {...form.getInputProps("maintenance_type")}
         />
 
@@ -201,11 +227,11 @@ const ModalCreateMaint = ({deviceToMaintNew}) => {
           label="Realizo Manteniemiento"
           placeholder=" - "
           {...form.getInputProps("user_maintenance")}
-          data={[
-            
-          ]}
+          data={usersList}
         />
+       
         <div className={stylesModal.button}>
+          
           <Button color="orange" type="submit">
           {" "}
           Registrar{" "}

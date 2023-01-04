@@ -173,7 +173,7 @@ export function Nav() {
                 </Menu.Dropdown>
               </Menu>
 
-              <Link href="/CalendarMaint" className={classes.link}>
+              <Link href="/calendarMaint" className={classes.link}>
                 Calendario
               </Link>
               <Link href="/inventory" className={classes.link}>
@@ -247,7 +247,7 @@ export function Nav() {
               <Text pl={20}>Nuevo Mantenimiento</Text>
             </Collapse>
 
-            <a href="/CalendarMaint" className={classes.link}>
+            <a href="/calendarMaint" className={classes.link}>
               <Box component="span" mr={5}>
                 Calendario
               </Box>

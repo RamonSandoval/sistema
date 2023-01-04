@@ -31,6 +31,7 @@ const ModalAddDevice = ({ closeModal}) => {
         device_id: form.values.device_id,
         model: form.values.model,
         department_name: form.values.department_name,
+
       },
     };
     try {

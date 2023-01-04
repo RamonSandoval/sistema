@@ -1,7 +1,7 @@
 import React from "react";
 import Notifications from "../components/Notifications";
 import stylesModal from "../styles/ModalRegisterNewMaint.module.css";
-import ModalMaintHistory from '../components/modals/ModalMaintHistory'
+import ModalMaintHistory from "../components/modals/ModalMaintHistory";
 import {
   Modal,
   Table,
@@ -40,13 +40,11 @@ const inventory = () => {
   const [search, setSearch] = useState("");
   const [arrayDevices, setarrayDevices] = useState([]);
   const [arrayDataDev, setarrayDataDev] = useState([]);
-  const [deviceToMaint, setDeviceToMaint] = useState({})
-  const [deviceToMaintNew, setDeviceToMaintNew] = useState({})
+  const [deviceToMaint, setDeviceToMaint] = useState({});
+  const [deviceToMaintNew, setDeviceToMaintNew] = useState({});
 
   const [openedMaint, setOpenedMaint] = useState(false);
   const [openedMaintNew, setOpenedMaintNew] = useState(false);
-
-
 
   useEffect(() => {
     init();
@@ -61,6 +59,11 @@ const inventory = () => {
 
   const closeModal = () => {
     setOpened(false);
+    init();
+  };
+
+  const closeModal2 = () => {
+    setOpened2(false);
     init();
   };
 
@@ -191,8 +194,8 @@ const inventory = () => {
                             {
                               data.attributes.department?.data?.attributes
                                 .department_name
-                            }{data.attributes.production?.data?.attributes
-                              .name}
+                            }
+                            {data.attributes.production?.data?.attributes.name}
                           </Center>
                         </td>
                         <td>
@@ -201,10 +204,22 @@ const inventory = () => {
                         <td>
                           <Center>
                             <div className={styles.icons}>
-                              <ActionIcon color="yellow" onClick={() => {setOpenedMaint(true); setDeviceToMaint(data)}}>
+                              <ActionIcon
+                                color="yellow"
+                                onClick={() => {
+                                  setOpenedMaint(true);
+                                  setDeviceToMaint(data);
+                                }}
+                              >
                                 <IconHistory size={18} />
                               </ActionIcon>
-                              <ActionIcon color="pink" onClick={() => {setOpenedMaintNew(true); setDeviceToMaintNew(data)}}>
+                              <ActionIcon
+                                color="pink"
+                                onClick={() => {
+                                  setOpenedMaintNew(true);
+                                  setDeviceToMaintNew(data);
+                                }}
+                              >
                                 <IconTools size={18} />
                               </ActionIcon>
                               <ActionIcon
@@ -254,7 +269,7 @@ const inventory = () => {
           opened={opened2}
           onClose={() => setOpened2(false)}
         >
-          <ModalEditDevice deviceToEdit={{ ...deviceToEdit }} />
+          <ModalEditDevice closeModal2={closeModal2} deviceToEdit={{ ...deviceToEdit }} />
         </Modal>
       )}
       {/*-----------------MODAL's CONFIRMATIONS--------------*/}
@@ -278,35 +293,35 @@ const inventory = () => {
         </div>
       </Modal>
       {deviceToMaint && (
-      <Modal
-        className={stylesModal.modal__container}
-        transition="fade"
-        size={850}
-        transitionDuration={400}
-        transitionTimingFunction="ease"
-        opened={openedMaint}
-        onClose={() => setOpenedMaint(false)}
-        title={"Historial de Mantenimiento Previo"}
-      >
-        <hr />
-        <ModalMaintHistory deviceToMaint={{...deviceToMaint}} />
-      </Modal>
+        <Modal
+          className={stylesModal.modal__container}
+          transition="fade"
+          size={850}
+          transitionDuration={400}
+          transitionTimingFunction="ease"
+          opened={openedMaint}
+          onClose={() => setOpenedMaint(false)}
+          title={"Historial de Mantenimiento Previo"}
+        >
+          <hr />
+          <ModalMaintHistory deviceToMaint={{ ...deviceToMaint }} />
+        </Modal>
       )}
 
       {deviceToMaintNew && (
-      <Modal
-        className={stylesModal.modal__container}
-        transition="fade"
-        size={850}
-        transitionDuration={400}
-        transitionTimingFunction="ease"
-        opened={openedMaintNew}
-        onClose={() => setOpenedMaint(false)}
-        title={"Crear Nuevo Mantenimiento"}
-      >
-        <hr />
-        <ModalCreateMaint deviceToMaintNew={{...deviceToMaintNew}} />
-      </Modal>
+        <Modal
+          className={stylesModal.modal__container}
+          transition="fade"
+          size={850}
+          transitionDuration={400}
+          transitionTimingFunction="ease"
+          opened={openedMaintNew}
+          onClose={() => setOpenedMaintNew(false)}
+          title={"Crear Nuevo Mantenimiento"}
+        >
+          <hr />
+          <ModalCreateMaint deviceToMaintNew={{ ...deviceToMaintNew }} />
+        </Modal>
       )}
     </>
   );

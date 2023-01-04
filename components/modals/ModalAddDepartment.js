@@ -3,21 +3,11 @@ import { IconPin } from "@tabler/icons";
 import Notifications from "../Notifications";
 import { useForm } from "@mantine/form";
 import React from "react";
-import { useState, useEffect } from "react";
 import api from "../../services/api";
 
-const ModalAddDepartment = (props) => {
-  const [arrayDataDep, setarrayDataDep] = useState([]);
-
-  useEffect(() => {
-    init();
-  }, []);
-
-  async function init() {
-    const listDepartment = await api.departmentsList(1);
-    setarrayDataDep(listDepartment.data);
-  }
-  async function createDepartment(props) {
+const ModalAddDepartment = () => {
+  
+  async function createDepartment() {
     const body = {
       data: {
         department_name: form.values.department_name,

@@ -14,31 +14,43 @@ import { useState, useEffect } from "react";
 import stylesModal from "../../styles/ModalRegisterNewMaint.module.css";
 import api from "../../services/api";
 import Notifications from "../Notifications";
-const ModalMaint = ({deviceToMaint}) => {
+const ModalMaint = ({deviceToMaint,closeModal2}) => {
   const [opened, setOpened] = useState(false);
   const [arrayDevices, setarrayDevices] = useState([]);
   const [arrayDataDev,setArrayDataDev] = useState([]);
   const [arrayDep, setarrayDep] = useState([]);
   const [active, setActive] = useState(true)
-
+  const [arrayUsers,setarrayUsers] = useState([]);
   const id_maint = deviceToMaint.attributes?.maintenance?.data?.id
+  
   useEffect(() => {
     init();
   }, []);
 
   async function init() {
+    
+  }
+  
+
+  async function init() {
     const list = await api.devicesList(1);
     const list2 = await api.devicesList(2);
     const listDepartment = await api.departmentsList(1);
+    const listUsers = await api.usersList(1);
+    setarrayUsers(listUsers)
     setarrayDep(listDepartment.data);
     setarrayDevices(list.data.concat(list2.data));
     setArrayDataDev(list.data.concat(list2.data));
 
-  }
+  } 
 
   var devicesListSelect = arrayDataDev.map((d) => {
     return d.attributes.device_id;
   });
+
+  var usersList = arrayUsers.map((d) => {
+    return d.username
+  })
 
   async function updateMaintenance(){
     const body = {
@@ -60,6 +72,8 @@ const ModalMaint = ({deviceToMaint}) => {
     try{
       await api.updateMaintenance(id_maint,body)
       Notifications.success("Se ha realizado el mantenimiento con exito");
+      init();
+      closeModal2();
     }catch(error){
       Notifications.error("Error al realizar el Mantenimiento");
       console.log(error)
@@ -71,7 +85,7 @@ const ModalMaint = ({deviceToMaint}) => {
       device_id: deviceToMaint.attributes.device_id,
       department_name: deviceToMaint.attributes?.department?.data?.attributes.department_name,
       model: deviceToMaint.attributes.model,
-      maintenance_type:deviceToMaint.attributes?.maintenance?.data?.attributes.maintenance_type,
+      //maintenance_type:deviceToMaint.attributes?.maintenance?.data?.attributes.maintenance_type,
     },
     validate:{
       department_name: (value) => 
@@ -108,10 +122,10 @@ const ModalMaint = ({deviceToMaint}) => {
         label="Departamento / Area" 
         {...form.getInputProps("department_name")}
         />
-        <TextInput
-        disabled
-        label="Tipo de mantenimiento anterior"
+        <Select
+        data={['Interno','Externo','Interno/Externo']}
         {...form.getInputProps("maintenance_type")}
+        label="Tipo de mantenimiento a realizar"
         />
 
         <TextInput
@@ -198,11 +212,8 @@ const ModalMaint = ({deviceToMaint}) => {
         </Radio.Group>
         <Select
           label="Realizo Manteniemiento"
-          placeholder=" - "
           {...form.getInputProps("user_maintenance")}
-          data={[
-            
-          ]}
+          data={usersList}
         />
         <div className={stylesModal.button}>
           <Button color="orange" type="submit">

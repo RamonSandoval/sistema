@@ -49,8 +49,23 @@ const TableDevices = () => {
     setarrayDataDev(list.data.concat(list2.data));
   }
 
+
+  function compare_date(a,b){
+    if(a.date < b.date){
+      return -1;
+    }
+    if (a.date > b.date){
+      return 1;
+    }
+    return 0;
+  }
+
   const closeModal = () => {
     setOpened(false);
+  };
+
+  const closeModal2 = () => {
+    setOpenedMaint(false);
   };
   
 
@@ -98,15 +113,8 @@ const TableDevices = () => {
     );
   if (!data) return <p>No profile data</p>; */
   
-  function compare_date(a,b){
-    if(a.date < b.date){
-      return -1;
-    }
-    if (a.date > b.date){
-      return 1;
-    }
-    return 0;
-  }
+  
+ 
   
   return (
     <>
@@ -162,8 +170,8 @@ const TableDevices = () => {
                   </th>
                 </tr>
               </thead>
-              <tbody>{arrayDevices && arrayDevices.sort(compare_date).map(
-    (data, index) =>
+              <tbody>
+                {arrayDevices && arrayDevices.sort(compare_date).map( (data, index) =>
       index < 10 && (
         <tr className={styles.table__data} key={data.device_id}>
           <td>
@@ -231,7 +239,7 @@ const TableDevices = () => {
         title="Realizar Mantenimiento"
       >
         <hr />
-        <ModalMaint deviceToMaint={{...deviceToMaint}} />
+        <ModalMaint deviceToMaint={{...deviceToMaint}} closeModal2={closeModal2}/>
       </Modal>
       )}
     </>
