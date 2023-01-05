@@ -3,4 +3,4 @@ Pendings to fix
 Add notifications delete user
 Edit user
 add user
-
+change departments to department in search bar tabledevices
