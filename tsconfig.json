@@ -23,7 +23,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "components/TableSort.tsx", "components/Stats.js", "components/Stats.js", "components/Calendar.js"  ],
+, "components/TableSort.tsx", "components/Stats.js", "components/Stats.js", "components/Calendar.js", "components/CalendarAnt.js"  ],
   "exclude": [
     "node_modules"
   ]

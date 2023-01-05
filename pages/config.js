@@ -14,24 +14,57 @@ import {
   IconEdit,
   IconTrash,
   IconPlus,
+  IconWorld,
 } from "@tabler/icons";
 import ModalAddDepartment from "../components/modals/ModalAddDepartment";
 import UsersList from "../components/UsersList";
 import ModalEditDeparment from "../components/modals/ModalEditDeparment";
+import ModalAddProduction from "../components/modals/ModalAddProduction";
+import ModalEditProduction from "../components/modals/ModalEditProduction";
 const config = () => {
   const [arrayDep, setarrayDep] = useState([]);
+  const [arrayProd, setArrayProd] = useState([])
   const [opened, setOpened] = useState();
-  const [departmentToDelete, setDepartmentToDelete] = useState({});
-  const [opened3, setOpened3] = useState(false);
   const [opened2, setOpened2] = useState(false);
+  const [opened3, setOpened3] = useState(false);
+  const [opened4, setOpened4] = useState(false);
+  const [opened5, setOpened5] = useState(false);
+  const [opened6, setOpened6] = useState(false);
+  const [departmentToDelete, setDepartmentToDelete] = useState({});
   const [departmentToEdit,setDepartmentToEdit] = useState({})
+  const [productionToDelete, setProductionToDelete] = useState({})
+  const [productionToEdit, setProductionToEdit] = useState({})
+  const [productionName,setProductionName] = useState({})
+  
+  const info = departmentToEdit.attributes?.department_name
+
 
   useEffect(() => {
     init();
   }, []);
 
+  const closeModal = () =>{
+    setOpened2(false);
+    init();
+  }
+
+  const closeModal2 = () =>{
+    setOpened(false);
+    init();
+  }
+  const closeModal3 = () =>{
+    setOpened5(false);
+    init();
+  }
+  const closeModal4 = () =>{
+    setOpened6(false);
+    init();
+  }
+
   async function init() {
     const listDepartment = await api.departmentsList(1);
+    const listProduction = await api.productionList(1)
+    setArrayProd(listProduction.data)
     setarrayDep(listDepartment.data);
   }
   async function deleteDepartment(id) {
@@ -44,6 +77,19 @@ const config = () => {
       console.error(error);
     }
   }
+
+  async function deleteProduction(id){
+    try{
+      await api.deleteProduction(id);
+      Notifications.success("Se ha eliminado el area de Produccion " + productionName + " correctamente");
+      init();
+    }catch(error){
+      Notifications.error("Error al eliminar el area de Produccion"+ id);
+
+
+    }
+  }
+
   /*LISTS*/
   var departmentsListSelect = arrayDep.map((d) => {
     return d.attributes.department_name;
@@ -51,6 +97,7 @@ const config = () => {
   return (
     <>
       <Layout tituloPagina="Configuracion" />
+
       <div className={styles.mainContainer}>
         <Tabs defaultValue="users" className={styles.tabsContainer}>
           <Tabs.List>
@@ -59,6 +106,9 @@ const config = () => {
             </Tabs.Tab>
             <Tabs.Tab value="departments" icon={<IconPin size={14} />}>
               Departamentos
+            </Tabs.Tab>
+            <Tabs.Tab value="production" icon={<IconWorld size={14} />}>
+              Produccion
             </Tabs.Tab>
             <Tabs.Tab value="settings" icon={<IconSettings size={14} />}>
               Settings
@@ -106,7 +156,12 @@ const config = () => {
                       <td>
                         <Center>
                           <div className={styles.icons}>
-                            <ActionIcon color="indigo" onClick={() => {setOpened2(true); setDepartmentToEdit(data)}}>
+                            <ActionIcon 
+                            color="indigo" 
+                            onClick={() => {
+                              setOpened2(true); 
+                              setDepartmentToEdit(data)
+                              }}>
                               <IconEdit size={18} />
                             </ActionIcon>
                             <ActionIcon
@@ -127,28 +182,115 @@ const config = () => {
             </Table>
           </Tabs.Panel>
 
+          <Tabs.Panel value="production" pt="xs">
+           <div className={styles.iconContainer}>
+              <ActionIcon
+                onClick={() => setOpened5(true)}
+                className={styles.add__icon}
+                variant="filled"
+              >
+                <IconPlus size={30} />
+              </ActionIcon>
+            </div>
+            <Table highlightOnHover>
+              <thead>
+                <tr className={styles.table__titles}>
+                  <th>
+                    <Center>ID</Center>
+                  </th>
+                  <th>
+                    <Center>Area de Produccion</Center>
+                  </th>
+                  <th>
+                    <Center>Acciones</Center>
+                  </th>
+                </tr>
+              </thead>
+              <tbody className={styles.tableBody}>
+                {arrayProd &&
+                  arrayProd.map((data) => (
+                    <tr key={data.department_name}>
+                      <td>
+                        <Center>{data.id}</Center>
+                      </td>
+                      <td>
+                        <Center>{data.attributes.name}</Center>
+                      </td>
+                      <td>
+                        <Center>
+                          <div className={styles.icons}>
+                            <ActionIcon 
+                            color="indigo" 
+                            onClick={() => {
+                              setOpened6(true); 
+                              setProductionToEdit(data)
+                              }}>
+                              <IconEdit size={18} />
+                            </ActionIcon>
+                            <ActionIcon
+                              color="red"
+                              onClick={() => {
+                                setOpened4(true);
+                                setProductionToDelete(data.id);
+                                setProductionName(data.attributes.name)
+                              }}
+                            >
+                              <IconTrash size={18} />
+                            </ActionIcon>
+                          </div>
+                        </Center>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </Table>
+          </Tabs.Panel>
           <Tabs.Panel value="settings" pt="xs">
             Settings tab content
           </Tabs.Panel>
         </Tabs>
       </div>
+     {/* MODAL ADD DEPARTMENT */}
       <Modal
         opened={opened}
         onClose={() => setOpened(false)}
         title="Agregar departamento"
       >
-        <ModalAddDepartment />
+        <ModalAddDepartment closeModal2={closeModal2}/>
       </Modal>
 
+      {/* MODAL ADD PRODUCTION */}
+      <Modal
+        opened={opened5}
+        onClose={() => setOpened5(false)}
+        title="Agregar area de Produccion"
+      >
+        <ModalAddProduction closeModal3={closeModal3} />
+      </Modal>
+
+
+      {/* MODAL EDIT DEPARTMENT */} 
       {departmentToEdit && (
         <Modal
-          title={"Editar Departamento " + departmentToEdit.id}
+          title={"Editar Departamento " + info}
           opened={opened2}
           onClose={() => setOpened2(false)}
         >
-          <ModalEditDeparment departmentToEdit={{ ...departmentToEdit }} />
+          <ModalEditDeparment closeModal={closeModal} departmentToEdit={{ ...departmentToEdit }} />
         </Modal>
       )}
+      {/* MODAL EDIT PRODUCTION */} 
+      {productionToEdit && (
+        <Modal
+          title={"Editar Departamento " + info}
+          opened={opened6}
+          onClose={() => setOpened6(false)}
+        >
+          <ModalEditProduction closeModal4={closeModal4} productionToEdit={{ ...productionToEdit }} />
+        </Modal>
+      )}
+
+      {/* MODAL DELETE DEPARTMENT */}
       <Modal
         opened={opened3}
         onClose={() => setOpened3(false)}
@@ -163,6 +305,28 @@ const config = () => {
           <Button
             onClick={() =>
               deleteDepartment(departmentToDelete).then(() => setOpened3(false))
+            }
+          >
+            Confirmar
+          </Button>
+        </div>
+      </Modal>
+
+      {/* MODAL DELETE PRODUCTION */}
+      <Modal
+        opened={opened4}
+        onClose={() => setOpened4(false)}
+        title={
+          <Text size="lg">Seguro que desea eliminar el area de Produccion "{productionName}" </Text>
+        }
+      >
+        <div className={styles.modal__confirmation}>
+          <Button onClick={() => setOpened4(false)} color="red">
+            Cancelar
+          </Button>
+          <Button
+            onClick={() =>
+              deleteProduction(productionToDelete).then(() => setOpened4(false))
             }
           >
             Confirmar

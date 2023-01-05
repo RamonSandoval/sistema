@@ -5,38 +5,38 @@ import { useForm } from "@mantine/form";
 import React from "react";
 import api from "../../services/api";
 
-const ModalAddDepartment = ({closeModal2}) => {
+const ModalAddProduction = ({closeModal3}) => {
   
-  async function createDepartment() {
+  async function createProduction() {
     const body = {
       data: {
-        department_name: form.values.department_name,
+        name: form.values.name,
       },
     };
     try {
-      await api.addDepartment(body);
-      Notifications.success("Se ha agregado el departamento Correctamente");
-      closeModal2();
+      await api.addProduction(body);
+      Notifications.success("Se ha agregado el area " + form.values.name + " correctamente");
+      closeModal3()
     } catch (error) {
-      Notifications.error("El departamento ya se encuentra registrado");
+      Notifications.error("Error al crear el area, ya se encuentra registrado?");
       console.error(error);
     }
   }
 
   const form = useForm({
     initialValues: {
-      department_name: "",
+      name: "",
     },
     validate: {
-      department_name: (value) =>
-        value.length === 0 ? "Ingrese el nombre del departamento" : null,
+      name: (value) =>
+        value.length === 0 ? "Ingrese el nombre del area de produccion" : null,
     },
   });
   return (
-    <form onSubmit={form.onSubmit(createDepartment)}>
+    <form onSubmit={form.onSubmit(createProduction)}>
       <TextInput
-        label="Nombre del Departamento"
-        {...form.getInputProps("department_name")}
+        label="Nombre del Area"
+        {...form.getInputProps("name")}
         icon={<IconPin />}
       />
       <Center pt={10}>
@@ -48,4 +48,4 @@ const ModalAddDepartment = ({closeModal2}) => {
   );
 };
 
-export default ModalAddDepartment;
+export default ModalAddProduction;

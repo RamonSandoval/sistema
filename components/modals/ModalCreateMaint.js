@@ -27,7 +27,6 @@ const ModalCreateMaint = ({deviceToMaintNew,action}) => {
   useEffect(() => {
     if(deviceToMaintNew.attributes?.maintenance?.data === null){
       Notifications.error("No se ha creado el mantenimiento");
-     
     } 
     else{
       Notifications.error("Ya se ha creado un mantenimiento");

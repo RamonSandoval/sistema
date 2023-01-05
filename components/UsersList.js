@@ -7,6 +7,8 @@ import { useState, useEffect } from "react";
 import api from "../services/api";
 import ModalEditUser from "./modals/ModalEditUser";
 import ModalAddUser from "./modals/ModalAddUser";
+import Notifications from './Notifications'
+
 const UsersList = () => {
   const [arrayUsers, setarrayUsers] = useState([]);
   const [opened, setOpened] = useState(false)
@@ -15,6 +17,7 @@ const UsersList = () => {
   const [userToDelete, setUserToDelete] = useState({});
   const [userToEdit,setUserToEdit] = useState({});
 
+  const user_name = userToEdit.username
   useEffect(() => {
     init();
   }, []);
@@ -27,12 +30,11 @@ const UsersList = () => {
   async function deleteUser(id) {
     try {
       await api.deleteUser(id);
-      alert('Se ha eliminado el usuario '+id)
-      //Notifications.success("Se ha eliminado el usuario " +id);
+      Notifications.success("Se ha eliminado el usuario " + id);
       init();
     } catch (error) {
       alert("Error al eliminar al usuario" + id)
-      //Notifications.error("Error al eliminar al usuario" + id);
+      Notifications.error("Error al eliminar al usuario" + id);
       console.error(error);
     }
   }

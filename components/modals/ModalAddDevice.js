@@ -29,37 +29,27 @@ const ModalAddDevice = ({ closeModal,props}) => {
       data: {
         device_id: form.values.device_id,
         model: form.values.model,
-        department_name: form.values.department_name,
+        departments:{
+          id:
+          form.values.device_id,
+          department_name: form.values.department_name,
+        }
+        //department_name: form.values.department_name,
  
       },
     };
     try {
       await api.addDevice(body)
       Notifications.success("Se ha agregado el dispositivo Correctamente");
-      init();
       closeModal();
+      init();
+      
     } catch (error) {
       Notifications.error("El dispositivo ya se encuentra registrado");
       console.error(error);
     }
   }
-  async function addDepartmentToDevice (){
-    const body2 = {
-      data:{
-        department_name:form.values.department_name
-      }
-    }
-    try{
-      await api.addDepartment(body2)
-      Notifications.success("Se ha agregado el departamento al Dispositivo con exito");
-
-
-    }catch(error){
-      Notifications.error("Error 403");
-    }
-
-  }
-
+  
   const form = useForm({
     initialValues: {
       device_id: "",
@@ -79,7 +69,7 @@ const ModalAddDevice = ({ closeModal,props}) => {
   });
 
   return (
-    <form onSubmit={form.onSubmit(createDevice,addDepartmentToDevice)}>
+    <form onSubmit={form.onSubmit(createDevice)}>
       <TextInput
         label="ID del Dispositivo"
         placeholder="IT10XXX"

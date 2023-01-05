@@ -6,28 +6,27 @@ import { IconId } from "@tabler/icons";
 import Notifications from "../Notifications";
 import api from "../../services/api";
 
-const ModalEditDeparment = ({ departmentToEdit,closeModal }) => {
-  const id_department = departmentToEdit.id
-
+const ModalEditProduction = ({ productionToEdit,closeModal4}) => {
+  const id_production = productionToEdit.id
+  const production_name = productionToEdit.attributes.name
   useEffect(() => {
     init();
   }, []);
 
   async function init(){}
   
-  async function updateDepartment(){
+  async function updateProduction(){
     const body = {
-      data:{
-        department_name: form.values.department_name
-      }
+        data:{
+            name: form.values.name
+        }
     }
     try{
-      await api.updateDepartment(id_department,body)
-      Notifications.success("Se ha editado el departamento con exito");
-      closeModal();
+        await api.updateProduction(id_production,body)
+        Notifications.success("Se ha editado el area de Produccion " + production_name +" con exito")
+        closeModal4()
     }catch(error){
-      console.log(error)
-      Notifications.error("Error 107 al editar el departamento");
+        Notifications.error("Error al editar el area de Produccion " + id_production)
 
     }
   }
@@ -35,17 +34,17 @@ const ModalEditDeparment = ({ departmentToEdit,closeModal }) => {
   
   const form = useForm({
     initialValues: {
-      department_name: departmentToEdit.attributes.department_name,
+      name: productionToEdit.attributes.name,
     },
     validate: {},
   });
 
 
   return (
-    <form onSubmit={form.onSubmit(updateDepartment)}>
+    <form onSubmit={form.onSubmit(updateProduction)}>
       <TextInput
-        label="Departamento"
-        {...form.getInputProps("department_name")}
+        label="Area de Produccion"
+        {...form.getInputProps("name")}
         icon={<IconId />}
       />
       <Center pt={12}>
@@ -58,4 +57,4 @@ const ModalEditDeparment = ({ departmentToEdit,closeModal }) => {
   );
 };
 
-export default ModalEditDeparment;
+export default ModalEditProduction;

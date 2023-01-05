@@ -29,8 +29,11 @@ const api = {
     addMaintenance: async (body) =>{
         return await conection.POST('/api/maintenances?populate=%2A', body);
     },
-    addUser: async () => {
+    addUser: async (body) => {
         return await conection.POST('/api/users',body);
+    },
+    addProduction: async (body) => {
+        return await conection.POST('/api/productions',body);
     },
     /*----------------------------------------------------------------------------------------------------------*/
     /*---------------------------------------------DELETE REQUEST-----------------------------------------------*/
@@ -43,8 +46,11 @@ const api = {
     deleteMaintenance: async (id) => {
         return await conection.DELETE('/api/maintenances/' + id);
     },
-    deleteUser: async () => {
+    deleteUser: async (id) => {
         return await conection.DELETE('/api/users/' + id);
+    },
+    deleteProduction: async (id) => {
+        return await conection.DELETE('/api/productions/' + id);
     },
     /*----------------------------------------------------------------------------------------------------------*/
     /*---------------------------------------------UPDATE REQUEST-----------------------------------------------*/
@@ -57,8 +63,11 @@ const api = {
     updateMaintenance: async (id,body) => {
         return await conection.UPDATE('/api/maintenances/' + id,body);
     },
-    updateUser: async () => {
-        return await conection.UPDATE('/api/users?pagination[pageSize]=300');
+    updateUser: async (id,body) => {
+        return await conection.UPDATE('/api/users?pagination[pageSize]=300' + id,body);
+    },
+    updateProduction: async (id,body) => {
+        return await conection.UPDATE('/api/productions/' + id,body);
     },
     /*----------------------------------------------------------------------------------------------------------*/
 

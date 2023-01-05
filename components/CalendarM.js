@@ -1,4 +1,4 @@
-import { Calendar } from "@mantine/dates";
+import { Calendar, Month } from "@mantine/dates";
 import styles from "../styles/CalendarMaint.module.css";
 import { Button, Center, Group, Indicator, Stack } from '@mantine/core';
 import { useState, useEffect } from "react";
@@ -29,19 +29,23 @@ const CalendarM = () => {
     return maintDay
   })
 
-  const diaNuevo = "2023/01/10"
+  const diaNuevo = "2023,10,10"
+  const dia = "5"
+  const mes = "01"
+  const anio = "2023"
   return (
     <div className={styles.calendarContainer}>
     <Calendar
-    amountOfMonths={2}
+    amountOfMonths={1}
       fullWidth
       excludeDate={(date) => date.getDay() === 0 || date.getDay() === 6}
+      
       renderDay={(date) => {
 
         const day = date.getDate();
         return (
           <>
-          <Indicator size={6} color="red" offset={8} disabled={day != diaNuevo}>
+          <Indicator size={6} color="red" offset={8} disabled={day != dia}>
             <div>{day}</div>
           </Indicator>
          </>

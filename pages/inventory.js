@@ -86,7 +86,7 @@ const inventory = () => {
           ?.toString()
           .toLowerCase()
           .includes(search.toLowerCase()) ||
-        elemento.attributes.departments?.data?.attributes.department_name
+        elemento.attributes.department?.data?.attributes.department_name
           .toString()
           .toLowerCase()
           .includes(search.toLowerCase()) ||
@@ -193,7 +193,7 @@ const inventory = () => {
                         <td>
                           <Center>
                             {
-                              data.attributes.departments?.data?.attributes
+                              data.attributes.department?.data?.attributes
                                 .department_name
                             }
                             {data.attributes.production?.data?.attributes.name}
