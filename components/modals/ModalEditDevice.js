@@ -20,7 +20,6 @@ const ModalEditDevice = ({ deviceToEdit, closeModal2 }) => {
   const listDepartment = await api.departmentsList(1);
   setarrayDep(listDepartment.data);
 
-    init();
   }
 
   var departmentsListSelect = arrayDep.map((d) => {

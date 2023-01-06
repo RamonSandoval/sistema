@@ -16,10 +16,7 @@ const ModalAddDevice = ({ closeModal,props}) => {
     setarrayDep(listDepartment.data);
   }
 
-  /*LISTS*/
-  var departmentsListSelect = arrayDep.map((d) => {
-    return d.attributes.department_name;
-  });
+ 
   /**
    * It creates a device with the data from the form.
    * </code>
@@ -29,15 +26,11 @@ const ModalAddDevice = ({ closeModal,props}) => {
       data: {
         device_id: form.values.device_id,
         model: form.values.model,
-        departments:{
-          id:
-          form.values.device_id,
-          department_name: form.values.department_name,
-        }
-        //department_name: form.values.department_name,
- 
+        department: form.values.department_name,
+
       },
     };
+   
     try {
       await api.addDevice(body)
       Notifications.success("Se ha agregado el dispositivo Correctamente");
@@ -45,7 +38,7 @@ const ModalAddDevice = ({ closeModal,props}) => {
       init();
       
     } catch (error) {
-      Notifications.error("El dispositivo ya se encuentra registrado");
+      Notifications.error("Error");
       console.error(error);
     }
   }
@@ -67,7 +60,8 @@ const ModalAddDevice = ({ closeModal,props}) => {
         value.length === 0 ? "Ingrese el modelo o marca del dispositivo" : null,
     },
   });
-
+  
+  
   return (
     <form onSubmit={form.onSubmit(createDevice)}>
       <TextInput
@@ -81,7 +75,10 @@ const ModalAddDevice = ({ closeModal,props}) => {
       icon={<IconPin />}
       searchable
       {...form.getInputProps("department_name")}
-      data={departmentsListSelect}
+      //data={departmentsListSelect}
+      data={arrayDep.map((d) => {
+        return { value: d.id, label: d.attributes.department_name }})}
+      
       />
       <TextInput
         pb={20}

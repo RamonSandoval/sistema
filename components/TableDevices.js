@@ -37,6 +37,10 @@ const TableDevices = () => {
   const [maintToPostpone,setMaintToPostPone] = useState([])
   const [openedMaint, setOpenedMaint] = useState(false);
   const [deviceToMaint, setDeviceToMaint] = useState({})
+
+
+ 
+
   useEffect(() => {
     init();
   }, []);
@@ -66,6 +70,7 @@ const TableDevices = () => {
 
   const closeModal2 = () => {
     setOpenedMaint(false);
+    init();
   };
   
 
@@ -75,22 +80,22 @@ const TableDevices = () => {
   };
 
   const filtrar = (search) => {
-    var resultado = arrayDataDev.filter((elemento) => {
+    var resultado = arrayDataDev.filter((e) => {
       if (
-        elemento.attributes.device_id
+        e.attributes.device_id
           ?.toString()
           .toLowerCase()
           .includes(search.toLowerCase()) ||
-        elemento.attributes.department?.data?.attributes.department_name
+        e.attributes.department?.data?.attributes.department_name
           .toString()
           .toLowerCase()
           .includes(search.toLowerCase()) ||
-        elemento.attributes.model
+        e.attributes.model
           ?.toString()
           .toLowerCase()
           .includes(search.toLowerCase())
       ) {
-        return elemento;
+        return e;
       }
     });
     setarrayDevices(resultado);
@@ -112,14 +117,16 @@ const TableDevices = () => {
       </Center>
     );
   if (!data) return <p>No profile data</p>; */
+
   
-  
- 
+
   
   return (
     <>
+    
       <Layout tituloPagina="Inicio" />
       <Center>
+        
         <div className={styles.table}>
           <div className={styles.table__title}>
             <div className={styles.table__title2}>

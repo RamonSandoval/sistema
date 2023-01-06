@@ -3,4 +3,6 @@ Pendings to fix
 Add notifications delete user
 Edit user
 add user
-change departments to department in search bar tabledevices
+order main table by next maint
+dont show devices to next maint if there is no main created
+fix maint bug

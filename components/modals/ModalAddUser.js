@@ -1,4 +1,4 @@
-import { Button, Center, TextInput } from '@mantine/core'
+import { Button, Center, PasswordInput, Select, TextInput } from '@mantine/core'
 import React from 'react'
 import { useForm } from "@mantine/form";
 import api from '../../services/api';
@@ -13,8 +13,9 @@ const ModalAddUser = () => {
       data:{
         username: form.values.username,
         email: form.values.email,
-       /*  confirmed: form.values.confirmed,
-        blocked: form.values.blocked */
+        password: form.values.password,
+        confirmed: form.values.confirmed,
+        blocked: form.values.blocked 
       },
     };
     try{
@@ -22,16 +23,17 @@ const ModalAddUser = () => {
       Notifications.success("Se ha agregado al usuario " );
     }
     catch(error){
-      Notifications.error("El usuario ya existe");
+      Notifications.error("Error");
     }
   }
 
   const form = useForm ({
     initialValues:{
       username: "",
+      password: "",
       email: "",
-      confirmed: "",
-      blocked: ""
+      confirmed: "true",
+      blocked: "false"
     },
     
     /* validate:{
@@ -46,8 +48,10 @@ const ModalAddUser = () => {
     <form onSubmit={form.onSubmit(createUser)}>
         <TextInput label="Usuario" {...form.getInputProps("username")}/>
         <TextInput label="Correo"  {...form.getInputProps("email")}/>
-        <TextInput label="Estatus"  {...form.getInputProps("confirmed")}/>
-        <TextInput label="Bloqueado"  {...form.getInputProps("blocked")}/>
+        <PasswordInput label="Contraseña" {...form.getInputProps("password")}/>
+        <Select label="Estatus" data={[{value:'true',label: 'Activo'},{value:'false', label: 'Inactivo'}]} {...form.getInputProps("confirmed")}/>
+        <Select label="Bloqueado" data={[{value:'true', label: 'Si'},{value:'false',label: 'No'}]} {...form.getInputProps("blocked")}/>
+       
         
         <Center pt={10}><Button type='submit' >{" "}Agregar{""}</Button></Center>
       </form>
