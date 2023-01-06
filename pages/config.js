@@ -1,6 +1,5 @@
 import React from "react";
 import Layout from "../components/Layout";
-import TableSort from "../components/TableSort";
 import { Button, Modal, Select, Text } from "@mantine/core";
 import styles from "../styles/Config.module.css";
 import { useState, useEffect } from "react";

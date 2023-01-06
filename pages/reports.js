@@ -8,6 +8,7 @@ import { IconCalendarEvent,IconBuilding, IconStatusChange, IconTool } from '@tab
 const reports = () => {
   return (
     <>
+    
     <Layout tituloPagina="Reportes"/>
     <Tabs defaultValue="mantMes" className={styles.tabs__container}>
       <Tabs.List>
@@ -16,7 +17,9 @@ const reports = () => {
         </Tabs.Tab>
       
         <Tabs.Tab icon={<IconBuilding size={14} />} value="mantDep">
-          Mantenimientos por Departamento
+         <div>
+         
+         </div>
         </Tabs.Tab>
 
         <Tabs.Tab icon={<IconTool size={14} />} value="troubleshoot">

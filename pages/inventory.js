@@ -46,6 +46,7 @@ const inventory = () => {
 
   const [openedMaint, setOpenedMaint] = useState(false);
   const [openedMaintNew, setOpenedMaintNew] = useState(false);
+  const deviceMaintStatus = arrayDevices.id
 
   useEffect(() => {
     init();
@@ -65,6 +66,11 @@ const inventory = () => {
 
   const closeModal2 = () => {
     setOpened2(false);
+    init();
+  };
+
+  const closeModal3 = () => {
+    setOpenedMaintNew(false);
     init();
   };
 
@@ -120,10 +126,8 @@ const inventory = () => {
     }
   }
 
-  /*LISTS*/
-  var devicesListSelect = arrayDataDev.map((d) => {
-    return d.attributes.device_id;
-  });
+  
+
 
   return (
     <>
@@ -215,6 +219,7 @@ const inventory = () => {
                                 <IconHistory size={18} />
                               </ActionIcon>
                               <ActionIcon
+                              
                                 color="pink"
                                 onClick={() => {
                                   setOpenedMaintNew(true);
@@ -307,7 +312,7 @@ const inventory = () => {
           title={"Historial de Mantenimiento Previo"}
         >
           <hr />
-          <ModalMaintHistory deviceToMaint={{ ...deviceToMaint }} />
+          <ModalMaintHistory deviceToMaint={deviceToMaint} />
         </Modal>
       )}
 
@@ -323,7 +328,7 @@ const inventory = () => {
           title={"Crear Nuevo Mantenimiento"}
         >
           <hr />
-          <ModalCreateMaint deviceToMaintNew={{ ...deviceToMaintNew }} />
+          <ModalCreateMaint closeModal3={closeModal3}deviceToMaintNew={{ ...deviceToMaintNew }} />
         </Modal>
       )}
     </>

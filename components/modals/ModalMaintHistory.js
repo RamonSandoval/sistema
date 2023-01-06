@@ -19,6 +19,7 @@ const ModalMaintHistory = ({deviceToMaint}) => {
   const [opened, setOpened] = useState(false);
   const [arrayDevices, setarrayDevices] = useState([]);
   const [arrayDataDev,setArrayDataDev] = useState([]);
+  
   const id_maint = deviceToMaint?.attributes?.maintenance?.data?.id
   useEffect(() => {
     init();
@@ -124,13 +125,14 @@ const ModalMaintHistory = ({deviceToMaint}) => {
           ]}
         />
 
-        <Checkbox.Group
+        <Radio.Group
         disabled
         label="Solicitio Usuario?"
+        {...form.getInputProps("user_request".valueOf(Radio))}
         >
-        <Checkbox readOnly disabled value="yes"label="Si"/>
-        <Checkbox readOnly disabled value="no" label="No"/>
-        </Checkbox.Group> 
+        <Radio readOnly disabled value="yes"label="Si"/>
+        <Radio readOnly disabled value="no" label="No"/>
+        </Radio.Group> 
 
         <div className={stylesModal.modal__solicitant}>
           <TextInput
@@ -181,12 +183,13 @@ const ModalMaintHistory = ({deviceToMaint}) => {
           {...form.getInputProps("next_maintenance")}
         /> */}
 
-        <Checkbox.Group
+        <Radio.Group
         label="Se atendio en tiempo y forma?"
+        {...form.getInputProps("maintenance_eval".valueOf(Radio))}
         >
-        <Checkbox readOnly disabled value="yes"label="Si"/>
-        <Checkbox readOnly disabled value="no" label="No"/>
-        </Checkbox.Group>
+        <Radio readOnly disabled value="yes"label="Si"/>
+        <Radio readOnly disabled value="no" label="No"/>
+        </Radio.Group>
 
         <TextInput
           readOnly

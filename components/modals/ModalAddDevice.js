@@ -2,11 +2,12 @@ import React from "react";
 import { Button, TextInput, Center, Select } from "@mantine/core";
 import api from "../../services/api";
 import { useState, useEffect } from "react";
-import { IconClipboardList, IconId, IconPin } from "@tabler/icons";
+import { IconBuildingCommunity, IconClipboardList, IconId, IconPin, IconWorld } from "@tabler/icons";
 import { useForm } from "@mantine/form";
 import Notifications from "../Notifications";
-const ModalAddDevice = ({ closeModal,props}) => {
+const ModalAddDevice = ({ closeModal}) => {
   const [arrayDep, setarrayDep] = useState([]);
+  const [arrayProd, setarrayProd] = useState([])
   useEffect(() => {
     init();
   }, []);
@@ -14,22 +15,26 @@ const ModalAddDevice = ({ closeModal,props}) => {
   async function init() {
     const listDepartment = await api.departmentsList(1);
     setarrayDep(listDepartment.data);
+    const listProd = await api.productionList(1)
+    setarrayProd(listProd.data)
   }
 
  
   /**
    * It creates a device with the data from the form.
    * </code>
-   */
+  */
+ 
   async function createDevice() {
     const body = {
       data: {
         device_id: form.values.device_id,
         model: form.values.model,
         department: form.values.department_name,
-
+        production: form.values.name,
       },
     };
+  
    
     try {
       await api.addDevice(body)
@@ -47,17 +52,19 @@ const ModalAddDevice = ({ closeModal,props}) => {
     initialValues: {
       device_id: "",
       model: "",
-      department_name: "",
+      department_name: "35",
+      name:"26",
+
     },
     validate: {
-      device_id: (value) =>
+    device_id: (value) =>
         value.length === 0 ? "Ingrese el Identificador del Dispositivo" : null,
-      department_name: (value) =>
+      /* department_name: (value) =>
         value.length === 0
           ? "Ingrese el departamento donde se encuentra el dispositivo"
-          : null,
+          : null,  */
       model: (value) =>
-        value.length === 0 ? "Ingrese el modelo o marca del dispositivo" : null,
+        value.length === 0 ? "Ingrese el modelo o marca del dispositivo" : null, 
     },
   });
   
@@ -72,14 +79,23 @@ const ModalAddDevice = ({ closeModal,props}) => {
       />
       <Select
       label="Departamento / Area"
-      icon={<IconPin />}
+      icon={<IconBuildingCommunity />}
       searchable
       {...form.getInputProps("department_name")}
-      //data={departmentsListSelect}
       data={arrayDep.map((d) => {
         return { value: d.id, label: d.attributes.department_name }})}
       
       />
+      
+      <Select
+      label="Area de Produccion"
+      icon={<IconWorld/>}
+      searchable
+      {...form.getInputProps("name")}
+      data={arrayProd.map((f) => {
+        return { value: f.id, label: f.attributes.name }})}
+      /> 
+      
       <TextInput
         pb={20}
         label="Modelo"

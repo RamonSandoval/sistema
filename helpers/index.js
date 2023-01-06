@@ -5,7 +5,7 @@ export const Fecha = fecha =>{
         month: 'long',
         day: '2-digit',
     }
-    return fechaNueva.toLocaleString('en-US',opciones)
+    return fechaNueva.toLocaleString('es-ES',opciones)
 } 
 
 export const Fecha2 = fecha =>{

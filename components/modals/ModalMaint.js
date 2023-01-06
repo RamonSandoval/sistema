@@ -67,6 +67,7 @@ const ModalMaint = ({deviceToMaint,closeModal2}) => {
         user_request_name: form.values.user_request_name,
         user_request_department: form.values.user_request_department
 
+
       }
     }
     try{
@@ -85,6 +86,7 @@ const ModalMaint = ({deviceToMaint,closeModal2}) => {
       device_id: deviceToMaint.attributes.device_id,
       department_name: deviceToMaint.attributes?.department?.data?.attributes.department_name,
       model: deviceToMaint.attributes.model,
+      name: deviceToMaint.attributes?.production?.data?.attributes.name
       //maintenance_type:deviceToMaint.attributes?.maintenance?.data?.attributes.maintenance_type,
     },
     validate:{
@@ -122,6 +124,12 @@ const ModalMaint = ({deviceToMaint,closeModal2}) => {
         label="Departamento / Area" 
         {...form.getInputProps("department_name")}
         />
+
+        <TextInput
+        disabled
+        label="Area de Produccion" 
+        {...form.getInputProps("name")}
+        />
         <Select
         data={['Interno','Externo','Interno/Externo']}
         {...form.getInputProps("maintenance_type")}
@@ -138,7 +146,7 @@ const ModalMaint = ({deviceToMaint,closeModal2}) => {
         <Radio.Group
           label="Solicito Usuario?"
           
-          {...form.getInputProps("user_request".valueOf(Checkbox.valueOf(Radio)))}
+          {...form.getInputProps("user_request".valueOf(Radio))}
         >
           <Radio onClick={()=> setActive(false)} value="yes" label="Si" />
           <Radio onClick={()=> setActive(true)}value="no" label="No" />

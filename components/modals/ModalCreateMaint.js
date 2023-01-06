@@ -15,7 +15,7 @@ import { useState, useEffect } from "react";
 import stylesModal from "../../styles/ModalRegisterNewMaint.module.css";
 import api from "../../services/api";
 import Notifications from '../Notifications';
-const ModalCreateMaint = ({deviceToMaintNew,action}) => {
+const ModalCreateMaint = ({deviceToMaintNew,closeModal3,enableMaintDevice}) => {
   const [arrayDevices, setarrayDevices] = useState([]);
   const [arrayUsers,setarrayUsers] = useState([]);
   const [arrayDataDev,setArrayDataDev] = useState([]);
@@ -26,12 +26,14 @@ const ModalCreateMaint = ({deviceToMaintNew,action}) => {
 
   useEffect(() => {
     if(deviceToMaintNew.attributes?.maintenance?.data === null){
-      Notifications.error("No se ha creado el mantenimiento");
+  
+      //Notifications.error("No se ha creado el mantenimiento");
     } 
     else{
       Notifications.error("Ya se ha creado un mantenimiento");
+      closeModal3()
     } 
-    init();
+    
   }, []);
 
   
@@ -82,6 +84,7 @@ const ModalCreateMaint = ({deviceToMaintNew,action}) => {
         console.log('Estas por crear un nuevo mantenimiento')
       await api.addMaintenance(body)
       Notifications.success("Se ha realizado el mantenimiento con exito");
+      closeModal3()
       
     }catch(error){
       Notifications.error("Error al realizar el Mantenimiento");

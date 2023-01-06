@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, TextInput, Center, Select } from "@mantine/core";
-import { IconClipboardList, IconId, IconPin } from "@tabler/icons";
+import { IconClipboardList, IconId, IconPin, IconWorld } from "@tabler/icons";
 import api from "../../services/api";
 import { useForm } from "@mantine/form";
 import Notifications from "../Notifications";
@@ -9,33 +9,30 @@ import { useState, useEffect } from "react";
 const ModalEditDevice = ({ deviceToEdit, closeModal2 }) => {
   const id_edit = deviceToEdit.id;
   const [arrayDep, setarrayDep] = useState([]);
+  const [arrayProd, setarrayProd] = useState([])
 
-  const departmentName = deviceToEdit.attributes.department.data.attributes.department_name
-  const id_deviceDepartment = deviceToEdit.attributes.department.data.id
+
+  
   useEffect(() => {
     init();
   }, []);
 
   async function init() {
-  const listDepartment = await api.departmentsList(1);
-  setarrayDep(listDepartment.data);
-
+    const listDepartment = await api.departmentsList(1);
+    setarrayDep(listDepartment.data);
+    const listProd = await api.productionList(1)
+    setarrayProd(listProd.data)
   }
-
-  var departmentsListSelect = arrayDep.map((d) => {
-    return d.attributes.department_name;
-  });
 
   async function updateDevice() {
     const body = {
       data: {
         device_id: form.values.device_id,
-        //department_name: form.values.department_name,
+        department: form.values.department_name,
         model: form.values.model,
-        departments: form.values.department_name,
+        production: form.values.name
       },
     };
-   
 
     try {
       await api.updateDevice(id_edit, body);
@@ -52,8 +49,9 @@ const ModalEditDevice = ({ deviceToEdit, closeModal2 }) => {
     initialValues: {
       device_id: deviceToEdit.attributes.device_id,
       department_name:
-        deviceToEdit.attributes?.department?.data?.attributes.department_name,
+      deviceToEdit.attributes?.department?.data?.id,
       model: deviceToEdit.attributes.model,
+      name: deviceToEdit.attributes?.production?.data?.id
     },
     validate: {
       /* device_id: (value) => 
@@ -72,12 +70,23 @@ const ModalEditDevice = ({ deviceToEdit, closeModal2 }) => {
         />
 
         <Select
-          data={departmentsListSelect}
           label="Departamento / Area"
           icon={<IconPin />}
+          searchable
           {...form.getInputProps("department_name")}
+          //data={departmentsListSelect}
+          data={arrayDep.map((d) => {
+            return { value: d.id, label: d.attributes.department_name };
+          })}
         />
-
+      <Select
+      label="Area de Produccion"
+      icon={<IconWorld/>}
+      searchable
+      {...form.getInputProps("name")}
+      data={arrayProd.map((f) => {
+        return { value: f.id, label: f.attributes.name }})}
+      /> 
         <TextInput
           pb={20}
           label="Modelo"
@@ -89,8 +98,6 @@ const ModalEditDevice = ({ deviceToEdit, closeModal2 }) => {
             {" "}
             Aplicar{" "}
           </Button>
-          <Button onClick={()=> console.log(id_deviceDepartment)}/>
-          <Button onClick={()=> console.log(departmentName)}/>
         </Center>
       </form>
     </>
