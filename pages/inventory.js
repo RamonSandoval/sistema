@@ -11,8 +11,9 @@ import {
   Text,
   Button,
   ScrollArea,
+  Container,
 } from "@mantine/core";
-import { Center } from "@mantine/core";
+import { Center, createStyles } from "@mantine/core";
 import { useState, useEffect } from "react";
 import Layout from "../components/Layout";
 import styles from "../styles/Inventory.module.css";
@@ -43,10 +44,14 @@ const inventory = () => {
   const [arrayDataDev, setarrayDataDev] = useState([]);
   const [deviceToMaint, setDeviceToMaint] = useState({});
   const [deviceToMaintNew, setDeviceToMaintNew] = useState({});
-
   const [openedMaint, setOpenedMaint] = useState(false);
   const [openedMaintNew, setOpenedMaintNew] = useState(false);
   const deviceMaintStatus = arrayDevices.id
+  const [scrolled, setScrolled] = useState(false);
+
+  
+  const devicesLength= arrayDevices.length
+
 
   useEffect(() => {
     init();
@@ -99,13 +104,43 @@ const inventory = () => {
         elemento.attributes.model
           ?.toString()
           .toLowerCase()
-          .includes(search.toLowerCase())
+          .includes(search.toLowerCase()) ||
+          elemento.attributes.production?.data?.attributes.name
+          ?.toString()
+          .toLowerCase()
+          .includes(search.toLowerCase()) 
       ) {
         return elemento;
       }
     });
     setarrayDevices(resultado);
   };
+
+  const useStyles = createStyles((theme) => ({
+    header: {
+      position: 'sticky',
+      top: 0,
+      backgroundColor:  theme.white,
+      transition: 'box-shadow 150ms ease',
+  
+      '&::after': {
+        content: '""',
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        bottom: 0,
+        borderBottom: `1px solid ${
+          theme.colorScheme === 'dark' ? theme.colors.dark[3] : theme.colors.gray[2]
+        }`,
+      },
+    },
+  
+    scrolled: {
+      boxShadow: theme.shadows.sm,
+    },
+  }));
+  const { classes, cx } = useStyles();
+
 
   /**
    * The function deleteDevice() is an async function that takes an id as a parameter. It then calls
@@ -125,10 +160,6 @@ const inventory = () => {
       console.error(error);
     }
   }
-
-  
-
-
   return (
     <>
       <Layout tituloPagina="Inventario" />
@@ -144,6 +175,7 @@ const inventory = () => {
                 <IconList />
               </ThemeIcon>
               <h3>Inventario</h3>
+              <p>{devicesLength}</p>
             </div>
 
             <TextInput
@@ -162,10 +194,9 @@ const inventory = () => {
             </ActionIcon>
           </div>
           <Divider variant="dashed" size="sm" my="sm" />
-          <div className={styles.tableContainer}>
-            <ScrollArea>
+          <ScrollArea sx={{ height: 600 }} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
               <Table highlightOnHover>
-                <thead>
+                <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
                   <tr className={styles.table__titles}>
                     <th>
                       <Center>#</Center>
@@ -256,8 +287,8 @@ const inventory = () => {
               </Table>
             </ScrollArea>
           </div>
-        </div>
       </Center>
+      
 
       {/*-----------------MODAL's ADD AND EDIT DEVICES--------------*/}
       <Modal
@@ -273,6 +304,7 @@ const inventory = () => {
 
       {deviceToEdit && (
         <Modal
+          centered
           title={"Editar dispositivo"}
           opened={opened2}
           onClose={() => setOpened2(false)}
@@ -302,6 +334,7 @@ const inventory = () => {
       </Modal>
       {deviceToMaint && (
         <Modal
+          centered
           className={stylesModal.modal__container}
           transition="fade"
           size={850}
@@ -318,6 +351,7 @@ const inventory = () => {
 
       {deviceToMaintNew && (
         <Modal
+          centered
           className={stylesModal.modal__container}
           transition="fade"
           size={850}

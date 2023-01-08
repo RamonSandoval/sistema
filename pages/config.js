@@ -251,6 +251,7 @@ const config = () => {
       </div>
      {/* MODAL ADD DEPARTMENT */}
       <Modal
+      centered
         opened={opened}
         onClose={() => setOpened(false)}
         title="Agregar departamento"
@@ -260,6 +261,7 @@ const config = () => {
 
       {/* MODAL ADD PRODUCTION */}
       <Modal
+      centered
         opened={opened5}
         onClose={() => setOpened5(false)}
         title="Agregar area de Produccion"
@@ -271,6 +273,7 @@ const config = () => {
       {/* MODAL EDIT DEPARTMENT */} 
       {departmentToEdit && (
         <Modal
+        centered
           title={"Editar Departamento " + info}
           opened={opened2}
           onClose={() => setOpened2(false)}
@@ -281,6 +284,7 @@ const config = () => {
       {/* MODAL EDIT PRODUCTION */} 
       {productionToEdit && (
         <Modal
+        centered
           title={"Editar Departamento " + info}
           opened={opened6}
           onClose={() => setOpened6(false)}
@@ -291,6 +295,7 @@ const config = () => {
 
       {/* MODAL DELETE DEPARTMENT */}
       <Modal
+      centered
         opened={opened3}
         onClose={() => setOpened3(false)}
         title={
@@ -313,6 +318,7 @@ const config = () => {
 
       {/* MODAL DELETE PRODUCTION */}
       <Modal
+      centered
         opened={opened4}
         onClose={() => setOpened4(false)}
         title={
