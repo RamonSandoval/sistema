@@ -8,4 +8,4 @@ dont show devices to next maint if there is no main created
 make another list with al maints 
 
 reports by date range
-
+show in modals production area 

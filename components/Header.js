@@ -152,29 +152,10 @@ export function Nav() {
               <Link href="/" className={classes.link}>
                 Inicio
               </Link>
-              <Menu shadow="md" width={290}>
-                <Menu.Target>
-                  <Button color="dark" variant="transparent">
-                    Mantenimientos
-                  </Button>
-                </Menu.Target>
-
-                <Menu.Dropdown>
-                  <Menu.Label>Opciones</Menu.Label>
-                  <Menu.Item
-                    onClick={() => setOpenedMaint(true)}
-                    icon={<IconSettings size={14} />}
-                  >
-                    Realizar Mantenimiento
-                  </Menu.Item>
-                  <Menu.Item
-                    onClick={() => setOpened(true)}
-                    icon={<IconClipboard size={14} />}
-                  >
-                    Registrar Nuevo Mantenimiento
-                  </Menu.Item>
-                </Menu.Dropdown>
-              </Menu>
+              
+              <Link href="/maintenance" className={classes.link}>
+                Mantenimientos
+              </Link>
 
               <Link href="/calendarMaint" className={classes.link}>
                 Calendario

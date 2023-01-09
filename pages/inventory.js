@@ -42,16 +42,10 @@ const inventory = () => {
   const [search, setSearch] = useState("");
   const [arrayDevices, setarrayDevices] = useState([]);
   const [arrayDataDev, setarrayDataDev] = useState([]);
-  const [deviceToMaint, setDeviceToMaint] = useState({});
-  const [deviceToMaintNew, setDeviceToMaintNew] = useState({});
-  const [openedMaint, setOpenedMaint] = useState(false);
-  const [openedMaintNew, setOpenedMaintNew] = useState(false);
-  const deviceMaintStatus = arrayDevices.id
+  const deviceMaintStatus = arrayDevices.id;
   const [scrolled, setScrolled] = useState(false);
 
-  
-  const devicesLength= arrayDevices.length
-
+  const devicesLength = arrayDevices.length;
 
   useEffect(() => {
     init();
@@ -74,11 +68,7 @@ const inventory = () => {
     init();
   };
 
-  const closeModal3 = () => {
-    setOpenedMaintNew(false);
-    init();
-  };
-
+  
   new Date().toLocaleString("en-US", {
     year: "numeric",
     month: "long",
@@ -105,10 +95,10 @@ const inventory = () => {
           ?.toString()
           .toLowerCase()
           .includes(search.toLowerCase()) ||
-          elemento.attributes.production?.data?.attributes.name
+        elemento.attributes.production?.data?.attributes.name
           ?.toString()
           .toLowerCase()
-          .includes(search.toLowerCase()) 
+          .includes(search.toLowerCase())
       ) {
         return elemento;
       }
@@ -118,29 +108,30 @@ const inventory = () => {
 
   const useStyles = createStyles((theme) => ({
     header: {
-      position: 'sticky',
+      position: "sticky",
       top: 0,
-      backgroundColor:  theme.white,
-      transition: 'box-shadow 150ms ease',
-  
-      '&::after': {
+      backgroundColor: theme.white,
+      transition: "box-shadow 150ms ease",
+
+      "&::after": {
         content: '""',
-        position: 'absolute',
+        position: "absolute",
         left: 0,
         right: 0,
         bottom: 0,
         borderBottom: `1px solid ${
-          theme.colorScheme === 'dark' ? theme.colors.dark[3] : theme.colors.gray[2]
+          theme.colorScheme === "dark"
+            ? theme.colors.dark[3]
+            : theme.colors.gray[2]
         }`,
       },
     },
-  
+
     scrolled: {
       boxShadow: theme.shadows.sm,
     },
   }));
   const { classes, cx } = useStyles();
-
 
   /**
    * The function deleteDevice() is an async function that takes an id as a parameter. It then calls
@@ -194,101 +185,86 @@ const inventory = () => {
             </ActionIcon>
           </div>
           <Divider variant="dashed" size="sm" my="sm" />
-          <ScrollArea sx={{ height: 600 }} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
-              <Table highlightOnHover>
-                <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
-                  <tr className={styles.table__titles}>
-                    <th>
-                      <Center>#</Center>
-                    </th>
-                    <th>
-                      <Center>ID Equipo</Center>
-                    </th>
-                    <th>
-                      <Center>Departamento / Area</Center>
-                    </th>
-                    <th>
-                      <Center>Modelo</Center>
-                    </th>
-                    <th>
-                      <Center>Acciones</Center>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className={styles.tableBody}>
-                  {arrayDevices &&
-                    arrayDevices.map((data) => (
-                      <tr key={data.device_id}>
-                        <td>
-                          <Center>{data.id}</Center>
-                        </td>
-                        <td>
-                          <Center>{data.attributes.device_id}</Center>
-                        </td>
-                        <td>
-                          <Center>
-                            {
-                              data.attributes.department?.data?.attributes
-                                .department_name
-                            }
-                            {data.attributes.production?.data?.attributes.name}
-                          </Center>
-                        </td>
-                        <td>
-                          <Center>{data.attributes.model}</Center>
-                        </td>
-                        <td>
-                          <Center>
-                            <div className={styles.icons}>
-                              <ActionIcon
-                                color="yellow"
-                                onClick={() => {
-                                  setOpenedMaint(true);
-                                  setDeviceToMaint(data);
-                                }}
-                              >
-                                <IconHistory size={18} />
-                              </ActionIcon>
-                              <ActionIcon
-                              
-                                color="pink"
-                                onClick={() => {
-                                  setOpenedMaintNew(true);
-                                  setDeviceToMaintNew(data);
-                                }}
-                              >
-                                <IconTools size={18} />
-                              </ActionIcon>
-                              <ActionIcon
-                                color="indigo"
-                                onClick={() => {
-                                  setDeviceToEdit(data);
-                                  setOpened2(true);
-                                  console.log(data);
-                                }}
-                              >
-                                <IconEdit size={18} />
-                              </ActionIcon>
-                              <ActionIcon
-                                color="red"
-                                onClick={() => {
-                                  setOpened3(true);
-                                  setDeviceToDelete(data.id);
-                                }}
-                              >
-                                <IconTrash size={18} />
-                              </ActionIcon>
-                            </div>
-                          </Center>
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </Table>
-            </ScrollArea>
-          </div>
+          <ScrollArea
+            sx={{ height: 700 }}
+            onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
+          >
+            <Table highlightOnHover>
+              <thead
+                className={cx(classes.header, { [classes.scrolled]: scrolled })}
+              >
+                <tr className={styles.table__titles}>
+                  <th>
+                    <Center>#</Center>
+                  </th>
+                  <th>
+                    <Center>ID Equipo</Center>
+                  </th>
+                  <th>
+                    <Center>Departamento / Area</Center>
+                  </th>
+                  <th>
+                    <Center>Modelo</Center>
+                  </th>
+                  <th>
+                    <Center>Acciones</Center>
+                  </th>
+                </tr>
+              </thead>
+              <tbody className={styles.tableBody}>
+                {arrayDevices &&
+                  arrayDevices.map((data) => (
+                    <tr key={data.device_id}>
+                      <td>
+                        <Center>{data.id}</Center>
+                      </td>
+                      <td>
+                        <Center>{data.attributes.device_id}</Center>
+                      </td>
+                      <td>
+                        <Center>
+                          {
+                            data.attributes.department?.data?.attributes
+                              .department_name
+                          }
+                          {data.attributes.production?.data?.attributes.name}
+                        </Center>
+                      </td>
+                      <td>
+                        <Center>{data.attributes.model}</Center>
+                      </td>
+                      <td>
+                        <Center>
+                          <div className={styles.icons}>
+                            <ActionIcon
+                              color="indigo"
+                              onClick={() => {
+                                setDeviceToEdit(data);
+                                setOpened2(true);
+                                console.log(data);
+                              }}
+                            >
+                              <IconEdit size={18} />
+                            </ActionIcon>
+                            <ActionIcon
+                              color="red"
+                              onClick={() => {
+                                setOpened3(true);
+                                setDeviceToDelete(data.id);
+                              }}
+                            >
+                              <IconTrash size={18} />
+                            </ActionIcon>
+                          </div>
+                        </Center>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </Table>
+          </ScrollArea>
+        </div>
       </Center>
-      
 
       {/*-----------------MODAL's ADD AND EDIT DEVICES--------------*/}
       <Modal
@@ -297,7 +273,6 @@ const inventory = () => {
         onClose={() => setOpened(false)}
         title="Agregar dispositivos"
       >
-
         {/* <ModalAddDeviceSteps/> */}
         <ModalAddDevice closeModal={closeModal} />
       </Modal>
@@ -309,7 +284,10 @@ const inventory = () => {
           opened={opened2}
           onClose={() => setOpened2(false)}
         >
-          <ModalEditDevice closeModal2={closeModal2} deviceToEdit={{ ...deviceToEdit }} />
+          <ModalEditDevice
+            closeModal2={closeModal2}
+            deviceToEdit={{ ...deviceToEdit }}
+          />
         </Modal>
       )}
       {/*-----------------MODAL's CONFIRMATIONS--------------*/}
@@ -332,39 +310,6 @@ const inventory = () => {
           </Button>
         </div>
       </Modal>
-      {deviceToMaint && (
-        <Modal
-          centered
-          className={stylesModal.modal__container}
-          transition="fade"
-          size={850}
-          transitionDuration={400}
-          transitionTimingFunction="ease"
-          opened={openedMaint}
-          onClose={() => setOpenedMaint(false)}
-          title={"Historial de Mantenimiento Previo"}
-        >
-          <hr />
-          <ModalMaintHistory deviceToMaint={deviceToMaint} />
-        </Modal>
-      )}
-
-      {deviceToMaintNew && (
-        <Modal
-          centered
-          className={stylesModal.modal__container}
-          transition="fade"
-          size={850}
-          transitionDuration={400}
-          transitionTimingFunction="ease"
-          opened={openedMaintNew}
-          onClose={() => setOpenedMaintNew(false)}
-          title={"Crear Nuevo Mantenimiento"}
-        >
-          <hr />
-          <ModalCreateMaint closeModal3={closeModal3}deviceToMaintNew={{ ...deviceToMaintNew }} />
-        </Modal>
-      )}
     </>
   );
 };

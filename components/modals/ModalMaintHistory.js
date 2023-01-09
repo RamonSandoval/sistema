@@ -15,12 +15,12 @@ import stylesModal from "../../styles/ModalRegisterNewMaint.module.css";
 import api from "../../services/api";
 import Notifications from "../Notifications";
 
-const ModalMaintHistory = ({deviceToMaint}) => {
+const ModalMaintHistory = ({deviceToMaintHistory}) => {
   const [opened, setOpened] = useState(false);
   const [arrayDevices, setarrayDevices] = useState([]);
   const [arrayDataDev,setArrayDataDev] = useState([]);
   
-  const id_maint = deviceToMaint?.attributes?.maintenance?.data?.id
+  const id_maint = deviceToMaintHistory?.attributes?.maintenance?.data?.id
   useEffect(() => {
     init();
   }, []);
@@ -64,20 +64,21 @@ const ModalMaintHistory = ({deviceToMaint}) => {
 
   const form = useForm({
     initialValues:{
-      device_id: deviceToMaint.attributes.device_id,
-      department_name: deviceToMaint.attributes?.department?.data?.attributes.department_name,
-      model: deviceToMaint.attributes.model,
-      maintenance_type:deviceToMaint.attributes?.maintenance?.data?.attributes.maintenance_type,
-      motive: deviceToMaint.attributes?.maintenance?.data?.attributes.motive,
-      user_request: deviceToMaint.attributes?.maintenance?.data?.attributes.user_request,
-      notes: deviceToMaint.attributes?.maintenance?.data?.attributes.notes,
-      maintenance_date: Fecha2(deviceToMaint.attributes?.maintenance?.data?.attributes.maintenance_date),
-      next_maintenance: Fecha2(deviceToMaint.attributes?.maintenance?.data?.attributes.next_maintenance),
-      maintenance_eval: deviceToMaint.attributes?.maintenance?.data?.attributes.maintenance_eval,
-      maintenance_type_next: deviceToMaint.attributes?.maintenance?.data?.attributes.maintenance_type_next,
-      user_request_name: deviceToMaint.attributes?.maintenance?.data?.attributes.user_request_name,
-      user_request_department: deviceToMaint.attributes?.maintenance?.data?.attributes.user_request_department,
-      user_maintenance: deviceToMaint.attributes?.maintenance?.data?.attributes.user_maintenance
+      device_id: deviceToMaintHistory.attributes.device_id,
+      department_name: deviceToMaintHistory.attributes?.department?.data?.attributes.department_name,
+      model: deviceToMaintHistory.attributes.model,
+      maintenance_type:deviceToMaintHistory.attributes?.maintenance?.data?.attributes.maintenance_type,
+      motive: deviceToMaintHistory.attributes?.maintenance?.data?.attributes.motive,
+      user_request: deviceToMaintHistory.attributes?.maintenance?.data?.attributes.user_request,
+      notes: deviceToMaintHistory.attributes?.maintenance?.data?.attributes.notes,
+      maintenance_date: Fecha2(deviceToMaintHistory.attributes?.maintenance?.data?.attributes.maintenance_date),
+      next_maintenance: Fecha2(deviceToMaintHistory.attributes?.maintenance?.data?.attributes.next_maintenance),
+      maintenance_eval: deviceToMaintHistory.attributes?.maintenance?.data?.attributes.maintenance_eval,
+      maintenance_type_next: deviceToMaintHistory.attributes?.maintenance?.data?.attributes.maintenance_type_next,
+      user_request_name: deviceToMaintHistory.attributes?.maintenance?.data?.attributes.user_request_name,
+      user_request_department: deviceToMaintHistory.attributes?.maintenance?.data?.attributes.user_request_department,
+      user_maintenance: deviceToMaintHistory.attributes?.maintenance?.data?.attributes.user_maintenance,
+      name:  deviceToMaintHistory.attributes?.production?.data?.attributes.name,
     },
     validate:{
 
@@ -109,6 +110,7 @@ const ModalMaintHistory = ({deviceToMaint}) => {
         disabled
         label="Departamento / Area" 
         {...form.getInputProps("department_name")}
+        {...form.getInputProps("name")}
         />
         <TextInput
         readOnly

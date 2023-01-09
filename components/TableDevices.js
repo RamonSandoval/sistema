@@ -52,19 +52,9 @@ const TableDevices = () => {
     setarrayDataDev(list.data.concat(list2.data));
   }
 
-  function compare_date(a, b) {
-    if (a.date < b.date) {
-      return -1;
-    }
-    if (a.date > b.date) {
-      return 1;
-    }
-    return 0;
-  }
-
   const closeModal = () => {
     setOpened(false);
-    init()
+    init();
   };
 
   const closeModal2 = () => {
@@ -116,10 +106,24 @@ const TableDevices = () => {
     );
   if (!data) return <p>No profile data</p>; */
 
+  const deviceList = arrayDevices.map((d) => {
+    return d;
+  });
+
+ /*  var deviceListFilter = arrayDevices.map((d) => {
+    const maint = d.attributes.maintenance;
+    if (maint === null) {
+      return "Sin Mantenimiento";
+    } else {
+      return maint;
+    }
+  }); */
+ 
   return (
     <>
       <Layout tituloPagina="Inicio" />
       <Center>
+        
         <div className={styles.table}>
           <div className={styles.table__title}>
             <div className={styles.table__title2}>
@@ -171,8 +175,8 @@ const TableDevices = () => {
                 </tr>
               </thead>
               <tbody>
-                {arrayDevices &&
-                  arrayDevices.sort(compare_date).map(
+                {deviceList &&
+                  deviceList.map(
                     (data, index) =>
                       index < 10 && (
                         <tr className={styles.table__data} key={data.device_id}>
@@ -203,6 +207,7 @@ const TableDevices = () => {
                             </Center>
                           </td>
                           <td>
+                            
                             {Fecha(
                               data.attributes.maintenance?.data?.attributes
                                 .next_maintenance
@@ -248,6 +253,7 @@ const TableDevices = () => {
 
       {maintToPostpone && (
         <Modal
+          centered
           opened={opened}
           onClose={() => setOpened(false)}
           title="Posponer Mantenimiento"
@@ -261,6 +267,7 @@ const TableDevices = () => {
 
       {deviceToMaint && (
         <Modal
+          centered
           className={stylesModal.modal__container}
           transition="fade"
           size={850}

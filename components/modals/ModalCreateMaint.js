@@ -15,7 +15,7 @@ import { useState, useEffect } from "react";
 import stylesModal from "../../styles/ModalRegisterNewMaint.module.css";
 import api from "../../services/api";
 import Notifications from '../Notifications';
-const ModalCreateMaint = ({deviceToMaintNew,closeModal3,enableMaintDevice}) => {
+const ModalCreateMaint = ({deviceToMaintNew,closeModal3,maintIndicator}) => {
   const [arrayDevices, setarrayDevices] = useState([]);
   const [arrayUsers,setarrayUsers] = useState([]);
   const [arrayDataDev,setArrayDataDev] = useState([]);

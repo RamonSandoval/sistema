@@ -1,92 +1,72 @@
-import { Calendar, Month } from "@mantine/dates";
-import styles from "../styles/CalendarMaint.module.css";
-import { Button, Center, Group, Indicator, Stack } from '@mantine/core';
-import { useState, useEffect } from "react";
-import api from '../services/api'
+import {
+  Calendar as BigCalendar,
+  momentLocalizer,
+  Views
+} from "react-big-calendar";
+import moment from "moment";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import styles from '../styles/CalendarM.module.css'
+moment.locale("en-GB");
+//momentLocalizer(moment);
+const localizer = momentLocalizer(moment);
 
-const CalendarM = () => {
-  const [value, setValue] = useState(null);
-  const [arrayDevices, setArrayDevices] = useState([]);
-
-  useEffect(() => {
-    init();
-  }, []);
-
-  async function init() {
-    const listDevices = await api.devicesList(1);
-    setArrayDevices(listDevices.data)
+const events = [
+  {
+    id: 0,
+    title: "Board meeting",
+    start: new Date(2018, 0, 29, 9, 0, 0),
+    end: new Date(2018, 0, 29, 13, 0, 0),
+    resourceId: 1
+  },
+  {
+    id: 1,
+    title: "MS training",
+    allDay: true,
+    start: new Date(2018, 0, 29, 14, 0, 0),
+    end: new Date(2018, 0, 29, 16, 30, 0),
+    resourceId: 2
+  },
+  {
+    id: 2,
+    title: "Team lead meeting",
+    start: new Date(2018, 0, 29, 8, 30, 0),
+    end: new Date(2018, 0, 29, 12, 30, 0),
+    resourceId: 3
+  },
+  {
+    id: 11,
+    title: "Birthday Party",
+    start: new Date(2018, 0, 30, 7, 0, 0),
+    end: new Date(2018, 0, 30, 10, 30, 0),
+    resourceId: 4
   }
+];
+
+const resourceMap = [
+  { resourceId: 1, resourceTitle: "Board room" },
+  { resourceId: 2, resourceTitle: "Training room" },
+  { resourceId: 3, resourceTitle: "Meeting room 1" },
+  { resourceId: 4, resourceTitle: "Meeting room 2" }
+];
 
 
 
-
-  var devicesList = arrayDevices.map((d) => {
-    return d.attributes
-  });
-
-  var devicesListDate = arrayDevices.map((d)=>{
-    const maintDay = d.attributes.maintenance?.data?.attributes?.next_maintenance
-    return maintDay
-  })
-
-  const diaNuevo = "2023,10,10"
-  const dia = "5"
-  const mes = "01"
-  const anio = "2023"
+export default function CalendarM() {
   return (
-    <div className={styles.calendarContainer}>
-    <Calendar
-    amountOfMonths={1}
-      fullWidth
-      excludeDate={(date) => date.getDay() === 0 || date.getDay() === 6}
+    <div className={styles.CalendarList}>
+      <BigCalendar
       
-      renderDay={(date) => {
-
-        const day = date.getDate();
-        return (
-          <>
-          <Indicator size={6} color="red" offset={8} disabled={day != dia}>
-            <div>{day}</div>
-          </Indicator>
-         </>
-          
-        );
-      }}
-      size="xl"
-      styles={(theme) => ({
-        cell: {
-          border: `1px solid ${
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[4]
-              : theme.colors.gray[2]
-          }`,
-        },
-        
-        day: { borderRadius: 0, height: 90, fontSize: theme.fontSizes.xs },
-        weekday: { fontSize: theme.fontSizes.lg },
-        weekdayCell: {
-          fontSize: theme.fontSizes.xl,
-          backgroundColor:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[5]
-              : theme.colors.gray[0],
-          border: `1px solid ${
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[4]
-              : theme.colors.gray[2]
-          }`,
-          height: 70,
-        }
-      })}
-      value={value}
-      onChange={setValue}
-    />
-
-    
-    <br/>
-    <p>{devicesListDate}</p>
-
+        selectable
+        localizer={localizer}
+        events={events}
+        defaultView={Views.DAY}
+        views={[Views.DAY, Views.WEEK, Views.MONTH]}
+        steps={60}
+        defaultDate={new Date(2018, 0, 29)}
+        resources={resourceMap}
+        resourceIdAccessor="resourceId"
+        resourceTitleAccessor="resourceTitle"
+      />
     </div>
   );
 }
-export default CalendarM;
