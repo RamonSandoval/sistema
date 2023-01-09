@@ -151,23 +151,6 @@ const MaintTable = () => {
     });
     setarrayDevices(resultado);
   };
-  /* useEffect(() => {
-    setLoading(true);
-    fetch(urlApi)
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-        setLoading(false);
-      });
-  }, []);
-
-  if (isLoading)
-    return (
-      <Center>
-        <Loader />
-      </Center>
-    );
-  if (!data) return <p>No profile data</p>; */
 
   return (
     <>

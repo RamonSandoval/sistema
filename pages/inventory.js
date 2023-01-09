@@ -1,7 +1,6 @@
 import React from "react";
 import Notifications from "../components/Notifications";
-import stylesModal from "../styles/ModalRegisterNewMaint.module.css";
-import ModalMaintHistory from "../components/modals/ModalMaintHistory";
+import { Loader, Pagination } from "@mantine/core";
 import {
   Modal,
   Table,
@@ -20,18 +19,14 @@ import styles from "../styles/Inventory.module.css";
 import { ActionIcon } from "@mantine/core";
 import {
   IconEdit,
-  IconHistory,
   IconList,
   IconPlus,
   IconSearch,
-  IconTools,
   IconTrash,
 } from "@tabler/icons";
 import ModalAddDevice from "../components/modals/ModalAddDevice";
 import api from "../services/api";
 import ModalEditDevice from "../components/modals/ModalEditDevice";
-import ModalCreateMaint from "../components/modals/ModalCreateMaint";
-import ModalAddDeviceSteps from "../components/modals/ModalAddDeviceSteps";
 
 const inventory = () => {
   const [opened, setOpened] = useState();
@@ -42,8 +37,9 @@ const inventory = () => {
   const [search, setSearch] = useState("");
   const [arrayDevices, setarrayDevices] = useState([]);
   const [arrayDataDev, setarrayDataDev] = useState([]);
-  const deviceMaintStatus = arrayDevices.id;
   const [scrolled, setScrolled] = useState(false);
+  const [pagenum, setPageNum] = useState("");
+  const [isLoading, setLoading] = useState(false);
 
   const devicesLength = arrayDevices.length;
 
@@ -52,11 +48,21 @@ const inventory = () => {
   }, []);
 
   async function init() {
-    const list = await api.devicesList(1);
-    const list2 = await api.devicesList(2);
+    setLoading(true);
+    const list = await api.devicesList(1).then(setLoading(false));
+    const list2 = await api.devicesList(2).then(setLoading(false));
     setarrayDevices(list.data.concat(list2.data));
     setarrayDataDev(list.data.concat(list2.data));
   }
+
+  
+  if (isLoading)
+  return (
+    console.log('cargando'),
+    <Center>
+      <Loader />
+    </Center>
+  );
 
   const closeModal = () => {
     setOpened(false);
@@ -68,7 +74,6 @@ const inventory = () => {
     init();
   };
 
-  
   new Date().toLocaleString("en-US", {
     year: "numeric",
     month: "long",

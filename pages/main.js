@@ -12,7 +12,7 @@ const main = () => {
     <>
     <Layout tituloPagina="Inicio"/>
     <TableDevices/>
-    {/* <Stats/> */}
+    <Stats/>
     </>
       
   )

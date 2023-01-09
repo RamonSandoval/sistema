@@ -14,20 +14,16 @@ import {
 import { useState, useEffect } from "react";
 import { ThemeIcon } from "@mantine/core";
 import {
-  IconClock,
   IconListDetails,
-  IconRotateClockwise,
   IconRotateClockwise2,
   IconSearch,
   IconTool,
-  IconTools,
 } from "@tabler/icons";
 import styles from "../styles/MainTable.module.css";
 import { ActionIcon } from "@mantine/core";
 import Layout from "./Layout";
 import { Fecha } from "../helpers";
 import Postpone from "./modals/ModalPostpone";
-import { IconList } from "@tabler/icons";
 import ModalMaint from "./modals/ModalMaint";
 
 const TableDevices = () => {
@@ -88,42 +84,34 @@ const TableDevices = () => {
     });
     setarrayDevices(resultado);
   };
-  /* useEffect(() => {
-    setLoading(true);
-    fetch(urlApi)
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-        setLoading(false);
-      });
-  }, []);
-
-  if (isLoading)
-    return (
-      <Center>
-        <Loader />
-      </Center>
-    );
-  if (!data) return <p>No profile data</p>; */
 
   const deviceList = arrayDevices.map((d) => {
-    return d;
+    return(
+      d
+    );
   });
 
- /*  var deviceListFilter = arrayDevices.map((d) => {
-    const maint = d.attributes.maintenance;
-    if (maint === null) {
-      return "Sin Mantenimiento";
-    } else {
-      return maint;
+  const filterList = arrayDevices.map((d) => {
+    return(
+      d.attributes.maintenance?.data?.attributes?.next_maintenance
+    );
+  });
+
+  function compare_date(a,b){
+    if(a.attributes.maintenance?.data?.attributes?.next_maintenance < b.attributes.maintenance?.data?.attributes?.next_maintenance){
+      return -1;
     }
-  }); */
- 
+    if(a.attributes.maintenance?.data?.attributes?.next_maintenance > b.attributes.maintenance?.data?.attributes?.next_maintenance){
+      return 1;
+    }
+    return 0;
+
+  }
+  
   return (
     <>
       <Layout tituloPagina="Inicio" />
       <Center>
-        
         <div className={styles.table}>
           <div className={styles.table__title}>
             <div className={styles.table__title2}>
@@ -135,6 +123,7 @@ const TableDevices = () => {
                 <IconListDetails />
               </ThemeIcon>
               <p>Proximos Mantenimientos</p>
+              <Button onClick={() => console.log(compare_date())} />
             </div>
             <div className={styles.searchBar}>
               <TextInput
@@ -176,7 +165,7 @@ const TableDevices = () => {
               </thead>
               <tbody>
                 {deviceList &&
-                  deviceList.map(
+                  deviceList.sort(compare_date).map(
                     (data, index) =>
                       index < 10 && (
                         <tr className={styles.table__data} key={data.device_id}>
@@ -207,7 +196,6 @@ const TableDevices = () => {
                             </Center>
                           </td>
                           <td>
-                            
                             {Fecha(
                               data.attributes.maintenance?.data?.attributes
                                 .next_maintenance

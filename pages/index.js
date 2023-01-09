@@ -20,6 +20,7 @@ const Home = () => {
         <title>Inicio</title>
       </Head>
       <TableDevices/> 
+      <Stats/>
      {/*  <h1>{session ? "" : ""}</h1>
 
       {session && <TableDevices />}

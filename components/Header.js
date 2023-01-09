@@ -219,17 +219,9 @@ export function Nav() {
             <a href="/" className={classes.link}>
               Inicio
             </a>
-            <UnstyledButton className={classes.link} onClick={toggleLinks}>
-              <Center inline>
-                <Box component="span" mr={5}>
-                  Mantenimiento
-                </Box>
-                <IconChevronDown size={16} color={theme.fn.primaryColor()} />
-              </Center>
-            </UnstyledButton>
-            <Collapse in={linksOpened}>
-              <Text pl={20}>Nuevo Mantenimiento</Text>
-            </Collapse>
+            <a href="/maintenance" className={classes.link}>
+              Mantenimientos
+            </a>
 
             <a href="/calendarMaint" className={classes.link}>
               <Box component="span" mr={5}>
