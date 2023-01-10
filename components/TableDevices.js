@@ -107,6 +107,7 @@ const TableDevices = () => {
     return 0;
 
   }
+
   
   return (
     <>

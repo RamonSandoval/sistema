@@ -122,11 +122,12 @@ export function Nav() {
   const [opened, setOpened] = useState(false);
 
   const [openedMaint, setOpenedMaint] = useState(false);
-  /* const { data: session } = useSession();
+  const { data: session } = useSession();
+
   useEffect(() => {
     if (session == null) return;
     console.log("session.jwt", session.jwt);
-  }, [session]); */
+  }, [session]); 
   return (
     <>
       <Box pb={70}>
@@ -136,7 +137,6 @@ export function Nav() {
               <a href="/">
               <Image className={styles.logo}
                 alt="Dialight Logo"
-                
                 src="/assets/img/logos/dialight_logo.png"
                 width={200}
               ></Image>
@@ -172,7 +172,7 @@ export function Nav() {
               <Menu shadow="md" width={290}>
                 <Menu.Target>
                   <Button color="dark" variant="transparent">
-                    Usuario X{/* {session.user.email} */}
+                     {session.user.email} 
                   </Button>
                 </Menu.Target>
 
@@ -181,9 +181,7 @@ export function Nav() {
                   <Menu.Item onClick={signOut} icon={<IconLogout size={14} />}>
                     Cerrar Sesion
                   </Menu.Item>
-                  <Menu.Item icon={<IconInfoCircle size={14} />}>
-                    Mi Perfil
-                  </Menu.Item>
+                  
                 </Menu.Dropdown>
               </Menu>
             </Group>
@@ -242,11 +240,23 @@ export function Nav() {
               my="sm"
               color={theme.colorScheme === "dark" ? "dark.5" : "gray.1"}
             />
+            <Menu shadow="md" width={290}>
+                <Menu.Target>
+                  <Button color="dark" variant="transparent">
+                     {session.user.email} 
+                  </Button>
+                </Menu.Target>
 
-            <Group position="center" grow pb="xl" px="md">
-              <Button variant="default">Log in</Button>
-              <Button>Sign up</Button>
-            </Group>
+                <Menu.Dropdown>
+                  <Menu.Label>Opciones</Menu.Label>
+                  <Menu.Item onClick={signOut} icon={<IconLogout size={14} />}>
+                    Cerrar Sesion
+                  </Menu.Item>
+                  
+                </Menu.Dropdown>
+              </Menu>
+
+            
           </ScrollArea>
         </Drawer>
       </Box>

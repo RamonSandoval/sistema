@@ -55,7 +55,6 @@ const MaintTable = () => {
       top: 0,
       backgroundColor: theme.white,
       transition: "box-shadow 150ms ease",
-
       "&::after": {
         content: '""',
         position: "absolute",
