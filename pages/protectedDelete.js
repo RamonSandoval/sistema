@@ -1,6 +1,7 @@
 import { getSession } from 'next-auth/react';
 import Head from 'next/head';
 import Link from 'next/link';
+import TableDevices from '../components/TableDevices';
 import styles from '../styles/Home.module.css';
 
 export default function Protected() {
@@ -9,7 +10,7 @@ export default function Protected() {
       <Head>
         <title>Strapi - Next - NextAuth</title>
       </Head>
-      <h1>Protected Page</h1>
+      <TableDevices/>
       <Link href="/">
         <button>Back to home page</button>
       </Link>

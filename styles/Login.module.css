@@ -1,10 +1,11 @@
 .loginContainer{
-    display: flex;
     border-radius: 1rem;
-    align-items: center;
-    justify-content: center;
-    height: auto;
+    max-width: 40rem;
+    background-color: rgba(238, 238, 238, 0.801);
   
+}
+.container{
+    padding-top: 8%;
 }
 .loginImage{
     float:left; 
@@ -24,8 +25,10 @@
 }
 .text h2{
     font-size: 1rem;
-    justify-content: left;
-    text-align: left;
+    justify-content: center;
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: 600;
 
 }
 .text{
@@ -35,6 +38,8 @@
 }
 .text p{
     font-size: 1rem;
+    justify-content: center;
+    text-align: center;
 }
 .stack{
     width: 80%;
@@ -91,4 +96,8 @@
 }
 .login__button:hover{
     background-color: #647da4;
+}
+.siconmanLogo{
+    float: right;
+    align-items: flex-end;
 }

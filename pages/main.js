@@ -11,8 +11,8 @@ const main = () => {
   return (
     <>
     <Layout tituloPagina="Inicio"/>
-    <TableDevices/>
-    <Stats/>
+   <TableDevices/>
+    <Stats/> 
     </>
       
   )

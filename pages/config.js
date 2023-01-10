@@ -84,8 +84,6 @@ const config = () => {
       init();
     }catch(error){
       Notifications.error("Error al eliminar el area de Produccion"+ id);
-
-
     }
   }
 
@@ -93,6 +91,12 @@ const config = () => {
   var departmentsListSelect = arrayDep.map((d) => {
     return d.attributes.department_name;
   });
+
+    var remove0  = arrayProd.map((a) => {
+      return 
+})
+      
+
   return (
     <>
       <Layout tituloPagina="Configuracion" />
@@ -206,7 +210,7 @@ const config = () => {
                 </tr>
               </thead>
               <tbody className={styles.tableBody}>
-                {arrayProd &&
+                {arrayProd && 
                   arrayProd.map((data) => (
                     <tr key={data.department_name}>
                       <td>
@@ -243,6 +247,7 @@ const config = () => {
                   ))}
               </tbody>
             </Table>
+            <Button onClick={()=> console.log(remove0)}/>
           </Tabs.Panel>
           <Tabs.Panel value="settings" pt="xs">
             Settings tab content

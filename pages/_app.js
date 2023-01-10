@@ -8,10 +8,9 @@ function MyApp({ Component, pageProps: { session, ...pageProps} }) {
   return(
     <>
     <NotificationsProvider position="top">
+    <SessionProvider session={session}>
     <Component {...pageProps} />
-    {/* <SessionProvider session={session}>
-     
-    </SessionProvider> */}
+    </SessionProvider> 
     </NotificationsProvider>
     </>
   ); 

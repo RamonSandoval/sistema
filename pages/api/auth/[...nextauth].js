@@ -17,8 +17,7 @@ export default NextAuth({
          * If authenticated, the function should return an object contains the user data.
          * If not, the function should return `null`.
          */
-        if (credentials == null) return
-         null;
+        if (credentials == null) return null;
         /**
          * credentials is defined in the config above.
          * We can expect it contains two properties: `email` and `password`

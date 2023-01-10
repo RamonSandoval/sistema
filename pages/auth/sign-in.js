@@ -2,60 +2,71 @@ import Head from "next/head";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import styles from "../../styles/Login.module.css";
-import { React, useState } from "react";
 import {} from "@mantine/core";
-import { IconAlertCircle } from "@tabler/icons";
 import {
-  Alert,
   TextInput,
-  ActionIcon,
   Stack,
   Button,
   PasswordInput,
-  Modal,
   Group,
   Image,
   Center,
 } from "@mantine/core";
-import { IconUser, IconX, IconLock, IconHelp } from "@tabler/icons";
-import { showNotification } from "@mantine/notifications";
+import { IconUser, IconLock } from "@tabler/icons";
 import Notifications from "../../components/Notifications";
+import { useForm } from '@mantine/form';
+import { signOut, useSession } from "next-auth/react";
+import React, { useEffect, useState } from "react";
 
 export default function SignIn() {
   const router = useRouter();
-  const [opened, setOpened] = useState(false);
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
+
+  const { data: session } = useSession();
+  
+  useEffect(() => {
+    if (session == null) return;
+    console.log("session.jwt", session.jwt);
+  }, [session]);
+
+  
+  const loginUser= async (e) => {
+    // e.preventDefault();
     const result = await signIn("credentials", {
       redirect: false,
-      email: e.target.email.value,
-      password: e.target.password.value,
+      email: form.values.email,
+      password: form.values.password,
     });
     if (result.ok) {
       router.replace("/");
+      Notifications.success("Ha iniciado sesion con exito");
       return;
     }
-    Notifications.error("Credenciales Incorrectas");
+    Notifications.error("Correo o Contraseña incorrecta");
   };
+  const form = useForm({
+    initialValues:{
+      email:'',
+      password:'',
+    },
+    validate:{
+      email:(value) => (/^\S+@\S+$/.test(value) ? null : 'Formato de correo no valido'),
+      password: (value) =>
+        value.length === 0 ? "Ingrese una contraseña" : null,
+    }
+  })
 
   return (
     <>
       <div className={styles.container}>
         <Head>
-          <title>Iniciar Sesion - Mantenimiento</title>
+          <title>Iniciar Sesion</title>
         </Head>
-        <form className={styles.form} onSubmit={onSubmit}>
+        <form className={styles.form} onSubmit={form.onSubmit(loginUser)}>
           <Center className={styles.center}>
             <div className={styles.loginContainer}>
               <Group spacing="xs">
                 <div className={styles.form}>
-                  <div className={styles.helpIcon}>
-                    <ActionIcon color="blue">
-                      <IconHelp size={25} />
-                    </ActionIcon>
-                  </div>
-
                   <Stack
                     className={styles.stack}
                     align="center"
@@ -68,23 +79,22 @@ export default function SignIn() {
                       width: 400,
                     })}
                   >
+                     
                     <Image
-                      pt={50}
-                      width={180}
-                      src="/assets/img/logos/dialight_logo.png"
-                    ></Image>
+                      pt={5}
+                      width={300}
+                      src="/assets/img/logos/logo_siconmandial.png"
+                    />
                     <div className={styles.text}>
-                      <h2>Iniciar Sesion</h2>
+                     
                       <p>
-                        Consulta informacion acerca del mantenimiento a equipo
-                        de computo
+                        Sistema de Control de Mantenimiento Preventivo y
+                        Correctivo a Equipo de Computo
                       </p>
                     </div>
 
                     <TextInput
-                      id="email"
-                      name="email"
-                      type="email"
+                      {...form.getInputProps('email')}
                       className={styles.inputs}
                       label="Correo electronico"
                       placeholder="ejemplo@gmail.com"
@@ -92,11 +102,9 @@ export default function SignIn() {
                       description="Ingrese su correo electronico"
                     />
                     <PasswordInput
-                      id="password"
-                      name="password"
+                      {...form.getInputProps('password')}
                       type="password"
                       className={styles.inputs}
-                      placeholder=""
                       label="Contraseña"
                       description="Ingrese su contraseña"
                       withAsterisk
@@ -109,14 +117,13 @@ export default function SignIn() {
                     >
                       Iniciar Sesion
                     </Button>
-
-                    <a
-                      className={styles.recover}
-                      href="https://ui.mantine.dev/component/server-error"
-                    >
-                      Recuperar Contraseña
-                    </a>
                   </Stack>
+                  {/* <Image
+                    className={styles.siconmanLogo}
+                    pt={0}
+                    width={130}
+                    src="/assets/img/logos/logo_siconman.png"
+                  /> */}
                 </div>
               </Group>
             </div>
