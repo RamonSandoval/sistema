@@ -3,7 +3,7 @@ import Layout from '../components/Layout'
 import { Tabs } from '@mantine/core';
 import styles from '../styles/Tabs.module.css'
 import { IconCalendarEvent,IconBuilding, IconStatusChange, IconTool } from '@tabler/icons';
-
+import DepartmentAreaStats from '../components/Lists/DepartmentAreaStats'
 
 const reports = () => {
   return (
@@ -17,14 +17,10 @@ const reports = () => {
         </Tabs.Tab>
       
         <Tabs.Tab icon={<IconBuilding size={14} />} value="mantDep">
-         <div>
-         
-         </div>
+          Equipos por Departamento / Area
         </Tabs.Tab>
 
-        <Tabs.Tab icon={<IconTool size={14} />} value="troubleshoot">
-          Fallas en Dispositivos
-        </Tabs.Tab>
+        
 
         <Tabs.Tab icon={<IconStatusChange size={14} />} value="quality">
           Calidad de Atencion
@@ -32,8 +28,9 @@ const reports = () => {
       </Tabs.List>
 
       <Tabs.Panel pt={20} value="mantMes">Por mes</Tabs.Panel>
-      <Tabs.Panel pt={20} value="mantDep">Mantenimiento por Departamento</Tabs.Panel>
-      <Tabs.Panel pt={20} value="troubleshoot">Fallas</Tabs.Panel>
+      <Tabs.Panel pt={20} value="mantDep">
+        <DepartmentAreaStats/>
+      </Tabs.Panel>
       <Tabs.Panel pt={20} value="quality">Calidad</Tabs.Panel>
     </Tabs>
     </>

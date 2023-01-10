@@ -7,13 +7,13 @@ const api = {
         return await conection.GET('/api/devices?pagination[pageSize]=100&populate=%2A&pagination[page]='+pagenum);
     },
     departmentsList: async () => {
-        return await conection.GET('/api/departments?pagination[pageSize]=300');
+        return await conection.GET('/api/departments?pagination[pageSize]=300&populate=%2A');
     },
     maintenanceList: async () => {
         return await conection.GET('/api/maintenances?pagination[pageSize]=300');
     },
     productionList: async () => {
-        return await conection.GET('/api/productions?pagination[pageSize]=300');
+        return await conection.GET('/api/productions?pagination[pageSize]=300&populate=%2A');
     },
     usersList: async () => {
         return await conection.GET('/api/users?pagination[pageSize]=300');

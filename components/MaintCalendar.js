@@ -1,34 +1,9 @@
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction";
+import React from 'react'
 
-export default function MaintCalendar() {
-  const handleDateClick = (arg) => {
-    alert(arg.dateStr);
-  };
-
+const MaintCalendar = () => {
   return (
-    <div className="App">
-      <FullCalendar
-        plugins={[dayGridPlugin, interactionPlugin]}
-        initialView="dayGridMonth"
-        weekends={false}
-        dateClick={(e) => handleDateClick(e)}
-        events={[
-          { title: "event 1", date: "2021-05-07" },
-          { title: "event 2", date: "2021-05-17" }
-        ]}
-        eventContent={renderEventContent}
-      />
-    </div>
-  );
+    <div>MaintCalendar</div>
+  )
 }
 
-function renderEventContent(eventInfo) {
-  return (
-    <>
-      <b>{eventInfo.timeText}</b>
-      <i>{eventInfo.event.title}</i>
-    </>
-  );
-}
+export default MaintCalendar

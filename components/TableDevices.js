@@ -123,7 +123,6 @@ const TableDevices = () => {
                 <IconListDetails />
               </ThemeIcon>
               <p>Proximos Mantenimientos</p>
-              <Button onClick={() => console.log(compare_date())} />
             </div>
             <div className={styles.searchBar}>
               <TextInput
