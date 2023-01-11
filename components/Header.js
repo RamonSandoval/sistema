@@ -172,7 +172,7 @@ export function Nav() {
               <Menu shadow="md" width={290}>
                 <Menu.Target>
                   <Button color="dark" variant="transparent">
-                     {session.user.email} 
+                    {/* {session.user.email} */}
                   </Button>
                 </Menu.Target>
 
@@ -243,7 +243,7 @@ export function Nav() {
             <Menu shadow="md" width={290}>
                 <Menu.Target>
                   <Button color="dark" variant="transparent">
-                     {session.user.email} 
+                     {/* {session.user.email}  */}
                   </Button>
                 </Menu.Target>
 

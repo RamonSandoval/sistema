@@ -1,6 +1,9 @@
 import React from "react";
 import Notifications from "../components/Notifications";
 import { Loader, Pagination } from "@mantine/core";
+import { signOut, useSession } from "next-auth/react";
+import { getSession } from 'next-auth/react';
+import { usePagination } from '@mantine/hooks';
 import {
   Modal,
   Table,
@@ -38,23 +41,33 @@ const inventory = () => {
   const [arrayDevices, setarrayDevices] = useState([]);
   const [arrayDataDev, setarrayDataDev] = useState([]);
   const [scrolled, setScrolled] = useState(false);
-  const [pagenum, setPageNum] = useState("");
   const [isLoading, setLoading] = useState(false);
+  const { data: session } = useSession();
+
+  const pagination = usePagination({total:10, initialPage: 1})
+
 
   const devicesLength = arrayDevices.length;
 
   useEffect(() => {
+    if (session == null) return;
+    console.log("session.jwt", session.jwt);
     init();
-  }, []);
+  }, [session]);
+  
+  const [activePage, setPage] = useState(1)
 
   async function init() {
-    setLoading(true);
-    const list = await api.devicesList(1).then(setLoading(false));
-    const list2 = await api.devicesList(2).then(setLoading(false));
-    setarrayDevices(list.data.concat(list2.data));
-    setarrayDataDev(list.data.concat(list2.data));
+    
+    const list = await api.devicesList(activePage);
+    setarrayDevices(list.data);
+    setarrayDataDev(list.data);
   }
 
+  function actualizar (){
+    console.log(activePage+1)
+    init()
+  }
   
   if (isLoading)
   return (
@@ -268,7 +281,19 @@ const inventory = () => {
               </tbody>
             </Table>
           </ScrollArea>
+          <Center pt={20}> 
+          <Pagination
+          grow
+            page={activePage}
+            initialPage={1}
+            onChange={setPage}
+            onClick={()=> actualizar()} 
+            total={7}
+            />
+          </Center>
+         
         </div>
+        
       </Center>
 
       {/*-----------------MODAL's ADD AND EDIT DEVICES--------------*/}
@@ -317,6 +342,22 @@ const inventory = () => {
       </Modal>
     </>
   );
+};
+export const getServerSideProps = async (context) => {
+  const session = await getSession(context);
+  // Check if session exists or not, if not, redirect
+  if (session == null) {
+    return {
+      redirect: {
+        destination: '/auth/not-authenticated',
+        permanent: true,
+      },
+    };
+  }
+  return {
+    props: {
+    },
+  };
 };
 
 export default inventory;
