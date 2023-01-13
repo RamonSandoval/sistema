@@ -23,6 +23,7 @@ const Home = () => {
     <div className={styles.container}>
       <Head>
         <title>Inicio</title>
+        
       </Head>
       {/* <TableDevices/>  */}
       {/* <Stats/> */}
@@ -34,7 +35,7 @@ const Home = () => {
         <Stats/>
         </>
         )}
-     {session ? (
+     {/* {session ? (
         <button onClick={signOut}>Sign out</button>
       ) : (
         <Link href="/auth/sign-in">
@@ -49,7 +50,7 @@ const Home = () => {
         >
           Protected Page
         </button>
-      </Link>
+      </Link> */}
     </div>
   );
 };

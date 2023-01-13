@@ -1,12 +1,13 @@
 import React from 'react'
 import Layout from '../components/Layout'
-import MaintTable from '../components/MaintTable'
+import MaintTableAll from '../components/Lists/MaintTableAll'
 
 const maintenance = () => {
   return (
     <>
-    <Layout tituloPagina="Mantenimientos" />
-    <MaintTable/>
+
+    <Layout tituloPagina="Inventario" />
+    <MaintTableAll/>
     </>
   )
 }
