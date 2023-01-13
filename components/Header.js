@@ -16,6 +16,7 @@ import {
   Collapse,
   Modal,
   Text,
+  ActionIcon,
 } from "@mantine/core";
 /* Importing the hook useDisclosure from the library @mantine/hooks. */
 import { useDisclosure } from "@mantine/hooks";
@@ -172,6 +173,9 @@ export function Nav() {
               <Menu shadow="md" width={290}>
                 <Menu.Target>
                   <Button color="dark" variant="transparent">
+                    <ActionIcon>
+                      <IconLogout color="black"/>
+                    </ActionIcon>
                     {/* {session.user.email} */}
                   </Button>
                 </Menu.Target>
@@ -243,7 +247,7 @@ export function Nav() {
             <Menu shadow="md" width={290}>
                 <Menu.Target>
                   <Button color="dark" variant="transparent">
-                     {/* {session.user.email}  */}
+                      {/* {session.user.email}  */}
                   </Button>
                 </Menu.Target>
 

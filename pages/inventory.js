@@ -3,6 +3,8 @@ import Notifications from "../components/Notifications";
 import { Loader, Pagination } from "@mantine/core";
 import { signOut, useSession } from "next-auth/react";
 import { getSession } from 'next-auth/react';
+import SignIn from "./auth/sign-in";
+
 import { usePagination } from '@mantine/hooks';
 import {
   Modal,
@@ -30,6 +32,7 @@ import {
 import ModalAddDevice from "../components/modals/ModalAddDevice";
 import api from "../services/api";
 import ModalEditDevice from "../components/modals/ModalEditDevice";
+import Head from "next/head";
 
 const inventory = () => {
   const [opened, setOpened] = useState();
@@ -171,7 +174,13 @@ const inventory = () => {
   }
   return (
     <>
-      <Layout tituloPagina="Inventario" />
+      <Layout />
+      <Head>
+        <title>Inventario</title>
+      </Head>
+      <h1>{session ? "" : <SignIn/>}</h1>
+
+      {session && (
       <Center>
         <div className={styles.table}>
           <div className={styles.table__title}>
@@ -295,6 +304,7 @@ const inventory = () => {
         </div>
         
       </Center>
+)};
 
       {/*-----------------MODAL's ADD AND EDIT DEVICES--------------*/}
       <Modal
