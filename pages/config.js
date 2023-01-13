@@ -2,8 +2,10 @@ import React from "react";
 import Layout from "../components/Layout";
 import { Button, Modal, Select, Text } from "@mantine/core";
 import styles from "../styles/Config.module.css";
+import { signOut, useSession } from "next-auth/react";
+import { getSession } from 'next-auth/react';
 import { useState, useEffect } from "react";
-import api from "../services/api";
+import SignIn from "./auth/sign-in";import api from "../services/api";
 import Notifications from "../components/Notifications";
 import { Tabs, Table, ActionIcon, Center } from "@mantine/core";
 import {
@@ -21,6 +23,7 @@ import ModalEditDeparment from "../components/modals/ModalEditDeparment";
 import ModalAddProduction from "../components/modals/ModalAddProduction";
 import ModalEditProduction from "../components/modals/ModalEditProduction";
 const config = () => {
+  const { data: session } = useSession();
   const [arrayDep, setarrayDep] = useState([]);
   const [arrayProd, setArrayProd] = useState([])
   const [opened, setOpened] = useState();
@@ -39,8 +42,10 @@ const config = () => {
 
 
   useEffect(() => {
+    if (session == null) return;
+    console.log("session.jwt", session.jwt);
     init();
-  }, []);
+  }, [session]);
 
   const closeModal = () =>{
     setOpened2(false);
@@ -99,8 +104,9 @@ const config = () => {
 
   return (
     <>
+    <h1>{session ? "" : <SignIn/>}</h1>
       <Layout tituloPagina="Configuracion" />
-
+      {session && (
       <div className={styles.mainContainer}>
         <Tabs defaultValue="users" className={styles.tabsContainer}>
           <Tabs.List>
@@ -254,6 +260,7 @@ const config = () => {
           </Tabs.Panel>
         </Tabs>
       </div>
+      )}
      {/* MODAL ADD DEPARTMENT */}
       <Modal
       centered
@@ -346,5 +353,21 @@ const config = () => {
     </>
   );
 };
-
+export const getServerSideProps = async (context) => {
+  const session = await getSession(context);
+  
+  // Check if session exists or not, if not, redirect
+  if (session == null) {
+    return {
+      redirect: {
+        destination: '/auth/sign-in',
+        permanent: true,
+      },
+    };
+  }
+  return {
+    props: {
+    },
+  };
+};
 export default config;
