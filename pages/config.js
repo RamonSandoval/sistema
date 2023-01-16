@@ -119,9 +119,7 @@ const config = () => {
             <Tabs.Tab value="production" icon={<IconWorld size={14} />}>
               Produccion
             </Tabs.Tab>
-            <Tabs.Tab value="settings" icon={<IconSettings size={14} />}>
-              Settings
-            </Tabs.Tab>
+           
           </Tabs.List>
 
           <Tabs.Panel value="users" pt="xs">
@@ -253,11 +251,8 @@ const config = () => {
                   ))}
               </tbody>
             </Table>
-            <Button onClick={()=> console.log(remove0)}/>
           </Tabs.Panel>
-          <Tabs.Panel value="settings" pt="xs">
-            Settings tab content
-          </Tabs.Panel>
+         
         </Tabs>
       </div>
       )}
@@ -293,6 +288,7 @@ const config = () => {
           <ModalEditDeparment closeModal={closeModal} departmentToEdit={{ ...departmentToEdit }} />
         </Modal>
       )}
+      
       {/* MODAL EDIT PRODUCTION */} 
       {productionToEdit && (
         <Modal

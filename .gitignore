@@ -43,6 +43,7 @@ node_modules/
 .next/
 .next
 jspm_packages/
+node_modules
 
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
@@ -127,3 +128,4 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+node_modules

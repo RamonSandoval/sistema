@@ -1,10 +1,20 @@
 import { ActionIcon, Button, Center, Group, Table } from "@mantine/core";
 import React from "react";
+import {Chart as ChartJS, BarElement,CategoryScale,LinearScale} from 'chart.js'
+import {Bar} from 'react-chartjs-2'
 import { useState, useEffect } from "react";
 import api from "../../services/api";
 import styles from "../../styles/DepartmentAreaStats.module.css"
 
+
+ChartJS.register(
+  CategoryScale,
+  BarElement,
+  LinearScale
+  )
 const DepartmentStats = () => {
+
+ 
   const [arrayDep, setarrayDep] = useState([]);
   const [arrayProd, setArrayProd] = useState([]);
   useEffect(() => {
@@ -16,6 +26,30 @@ const DepartmentStats = () => {
     const listProduction = await api.productionList(1);
     setArrayProd(listProduction.data);
     setarrayDep(listDepartment.data);
+  }
+  var data = {
+    labels: arrayDep && arrayDep.map(data=> data.attributes.department_name ),
+    datasets: [{
+      label: '# of Votes',
+      data:  arrayDep && arrayDep.map(data => data.attributes.devices.data.length),
+      borderWidth: 1
+    }]
+  }
+
+
+  var options = {
+    maintainAspectRatio: false,
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    },
+    legend:{
+        labels:{
+            fontSize:26
+        }
+
+    }
   }
 
   return (
@@ -72,6 +106,14 @@ const DepartmentStats = () => {
         </tbody>
       </Table>
       </div>
+      
+    <div>
+        <Bar
+            height={400}
+            data={data}
+            options={options}
+        />
+    </div>
     </>
   );
 };

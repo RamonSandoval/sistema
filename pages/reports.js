@@ -8,15 +8,13 @@ import { signOut, useSession } from "next-auth/react";
 import { getSession } from 'next-auth/react';
 import { useState, useEffect } from "react";
 import SignIn from "./auth/sign-in";
-
-
+import StatsDepartments from '../components/StatsDepartments';
 const reports = () => {
 
   const { data: session } = useSession();
   useEffect(() => {
     if (session == null) return;
     console.log("session.jwt", session.jwt);
-    init();
   }, [session]);
 
   return (
@@ -28,9 +26,9 @@ const reports = () => {
     <Tabs defaultValue="mantMes" className={styles.tabs__container}>
       <Tabs.List>
         <Tabs.Tab icon={<IconCalendarEvent size={14} />} value="mantMes">
-          Mantenimientos por Mes
+            Mantenimientos Realizados
         </Tabs.Tab>
-      
+        
         <Tabs.Tab icon={<IconBuilding size={14} />} value="mantDep">
           Equipos por Departamento / Area
         </Tabs.Tab>
@@ -42,11 +40,18 @@ const reports = () => {
         </Tabs.Tab>
       </Tabs.List>
 
-      <Tabs.Panel pt={20} value="mantMes">Por mes</Tabs.Panel>
+      <Tabs.Panel pt={20} value="mantMes">
+      <StatsDepartments/>
+      </Tabs.Panel>
+        
       <Tabs.Panel pt={20} value="mantDep">
         <DepartmentAreaStats/>
+        <StatsDepartments/>
       </Tabs.Panel>
-      <Tabs.Panel pt={20} value="quality">Calidad</Tabs.Panel>
+
+      <Tabs.Panel pt={20} value="quality">
+        Calidad
+      </Tabs.Panel>
     </Tabs>
     )}
     </>

@@ -31,9 +31,9 @@ const ModalEditUser = ({userToEdit}) => {
     const body = {
       data:{
         username: form.values.username,
-        email: form.values.email,
+        /* email: form.values.email,
         blocked: form.values.blocked,
-        confirmed: form.values.confirmed,
+        confirmed: form.values.confirmed, */
         
       }
     }

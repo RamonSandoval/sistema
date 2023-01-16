@@ -117,6 +117,7 @@ const UsersList = () => {
 
       {userToEdit && (
       <Modal
+        centered
         opened={opened2}
         onClose={() => setOpened2(false)}
         title="Editar Usuario"
@@ -129,6 +130,7 @@ const UsersList = () => {
 
       
       <Modal
+        centered
         opened={opened}
         onClose={() => setOpened(false)}
         title="Editar Usuario"

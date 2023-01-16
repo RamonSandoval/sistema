@@ -12,10 +12,10 @@ const ModalAddUser = () => {
     const body = {
       data:{
         username: form.values.username,
-        email: form.values.email,
+        /* email: form.values.email,
         password: form.values.password,
         confirmed: form.values.confirmed,
-        blocked: form.values.blocked 
+        blocked: form.values.blocked  */
       },
     };
     try{

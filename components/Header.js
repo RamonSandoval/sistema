@@ -158,7 +158,7 @@ export function Nav() {
                 Mantenimientos
               </Link>
 
-              <Link href="/calendarMaint" className={classes.link}>
+              <Link href="/calendarmaintenance" className={classes.link}>
                 Calendario
               </Link>
               <Link href="/inventory" className={classes.link}>
@@ -225,7 +225,7 @@ export function Nav() {
               Mantenimientos
             </a>
 
-            <a href="/calendarMaint" className={classes.link}>
+            <a href="/calendarmaintenance" className={classes.link}>
               <Box component="span" mr={5}>
                 Calendario
               </Box>

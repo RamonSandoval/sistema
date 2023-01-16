@@ -181,7 +181,7 @@ const inventory = () => {
       <h1>{session ? "" : <SignIn/>}</h1>
 
       {session && (
-      <Center>
+      <Center >
         <div className={styles.table}>
           <div className={styles.table__title}>
             <div className={styles.table__title2}>
@@ -290,7 +290,7 @@ const inventory = () => {
               </tbody>
             </Table>
           </ScrollArea>
-          <Center pt={20}> 
+          <Center pt={20} > 
           <Pagination
           grow
             page={activePage}
